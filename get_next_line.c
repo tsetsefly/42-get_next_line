@@ -13,34 +13,10 @@
 #include "get_next_line.h"
 #include <stdio.h> // REMOVE LATER!!!
 
-void				*ft_memset(void *b, int c, size_t len) // ADD IN LIBFT LATER
-{
-	unsigned char	*ptr;
-
-	ptr = (unsigned char *)b;
-	while (len > 0)
-	{
-		*ptr = c;
-		ptr++;
-		len--;
-	}
-	return (b);
-}
-
-size_t		ft_strlen(const char *str) // ADD IN LIBFT LATER
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 int			get_next_line(const int fd, char **line)
 {
 	char	buf[BUFF_SIZE + 1];
-	size_t	len;
+	int		len;
 	size_t	i;
 
 
@@ -56,16 +32,25 @@ int			get_next_line(const int fd, char **line)
 		buf[BUFF_SIZE] = '\0';
 		while (buf[i])
 		{
-			if (buf[i++] == '\n');
+			if (buf[i++] == '\n')
 				len = i;
 		}
-		if (len == -1)
-			
+		// if (len == -1) // use strchr here?
+
 		printf("LEN = %lu\n", len);
 		printf("*****\nLINE->%s<-END OF LINE\n*****\n", buf);
 		// look for \n... 1) if no new line need to add to variable and continue forward 2) if newline... need to end, save the rest beyond the newline
 		// probably need realloc as well
+		/* SCENARIOS while reading through BUF
+		1) no newline in or EOF in buf
+		2) one newline and no EOF in buf
+		3) one newline and EOF in buf
+		3) multiple newlines and no EOF in buf
+		4) multiple newlines and EOF in buf
 
+		
+
+		*/
 	}
 	printf("END OF FUNCTION!!!\n");
 	return (0);
