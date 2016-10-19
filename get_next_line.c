@@ -48,6 +48,16 @@ int			get_next_line(const int fd, char **line)
 		3) multiple newlines and no EOF in buf
 		4) multiple newlines and EOF in buf
 
+		strchr = 
+		realloc = 
+		strncat = 
+		strncpy = 
+		strnew = 
+		strdel = 
+		strdup = 
+		strjoin = 
+
+		need to count the bytes read?
 		
 
 		*/
