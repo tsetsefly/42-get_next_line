@@ -16,7 +16,7 @@
 int			get_next_line(const int fd, char **line)
 {
 	char	buf[BUFF_SIZE + 1];
-	int		len;
+	size_t	len;
 	size_t	i;
 
 
@@ -34,28 +34,30 @@ int			get_next_line(const int fd, char **line)
 		{
 			if (buf[i++] == '\n')
 				len = i;
+
 		}
 		// if (len == -1) // use strchr here?
 
 		printf("LEN = %lu\n", len);
-		printf("*****\nLINE->%s<-END OF LINE\n*****\n", buf);
-		// look for \n... 1) if no new line need to add to variable and continue forward 2) if newline... need to end, save the rest beyond the newline
+		printf("*****\nLINE->%s<-END OF LINE\n*****\n", &buf[len]);
+
+		// look for \n... 1) if no new line needed to add to variable and continue forward 2) if newline... need to end, save the rest beyond the newline
 		// probably need realloc as well
 		/* SCENARIOS while reading through BUF
 		1) no newline in or EOF in buf
 		2) one newline and no EOF in buf
 		3) one newline and EOF in buf
-		3) multiple newlines and no EOF in buf
-		4) multiple newlines and EOF in buf
+		4) multiple newlines and no EOF in buf
+		5) multiple newlines and EOF in buf
 
-		strchr = 
-		realloc = 
-		strncat = 
-		strncpy = 
-		strnew = 
-		strdel = 
-		strdup = 
-		strjoin = 
+		strchr = locates the first occurance of char c in string s, returns pointer to that char
+		realloc = changes the size of allocation of a ptr to size, if not enough room will malloc again and copy over as much as possible, free the original and return the new ptr
+		strncat = concatenates n characters of s2 to s1
+		strncpy = copies len chars from src to dst, returns dst
+		strnew = creates a 0 initialized string of size
+		strdel = deletes / frees a string via its pointer
+		strdup = mallocs for a new string and copies an inputed str
+		strjoin = mallocs for and concatenates two strings
 
 		need to count the bytes read?
 		
@@ -73,7 +75,6 @@ int			get_next_line(const int fd, char **line)
 // BONUS
 // need to accomplish with one static variable
 // need to be able to handle multiple file descriptors with interleaved calls of get_next_line
-
 
 // first check for errors with fd and line
 // create a buffer of buff_size + 1 (for the terminator)... for reading in chunks
@@ -122,3 +123,24 @@ int main() // REMOVE LATER!!!!
 	}
 	return (0);
 }
+
+// #include "get_next_line.h"
+// #include <fcntl.h>
+// #include <stdio.h>
+
+// int     main(void)
+// {
+//   char  *line;
+//   int   fd;
+
+//   if ((fd = open("file", O_RDONLY)) == -1)
+//     return (-1);
+//   while (get_next_line(fd, &line) != 0)
+//   {
+//     printf("%s\n", line);
+//     free(line);
+//   }
+//   if (close(fd) == -1)
+//     return (-1);
+//   return (0);
+// }
