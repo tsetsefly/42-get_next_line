@@ -19,27 +19,29 @@ int			get_next_line(const int fd, char **line)
 	size_t	len;
 	size_t	i;
 
-
-	if (!line || !fd)
-		return (-1);
+	// if (!line || !fd)
+	// 	return (-1);
 	if (!(*line = (char *)malloc(sizeof(char) * (BUFF_SIZE))))
 		return (-1);
+	// zero-ing out the line passed via a pointer into the function to store buf
 	*line = ft_memset(*line, 0, BUFF_SIZE);
 	while (read(fd, buf, BUFF_SIZE) > 0)
 	{
-		len = -1;
+		// len = -1;
 		i = 0;
 		buf[BUFF_SIZE] = '\0';
 		while (buf[i])
 		{
 			if (buf[i++] == '\n')
+			{
 				len = i;
-
+			}
 		}
+		*line = strncpy(*line, buf, BUFF_SIZE);
+		return (1);
 		// if (len == -1) // use strchr here?
-
-		printf("LEN = %lu\n", len);
-		printf("*****\nLINE->%s<-END OF LINE\n*****\n", &buf[len]);
+		// printf("LEN = %lu\n", len);
+		// printf("*****\nLINE->%s<-END OF LINE\n*****\n", buf);
 
 		// look for \n... 1) if no new line needed to add to variable and continue forward 2) if newline... need to end, save the rest beyond the newline
 		// probably need realloc as well
@@ -51,17 +53,18 @@ int			get_next_line(const int fd, char **line)
 		5) multiple newlines and EOF in buf
 
 		strchr = locates the first occurance of char c in string s, returns pointer to that char
-		realloc = changes the size of allocation of a ptr to size, if not enough room will malloc again and copy over as much as possible, free the original and return the new ptr
+		*realloc = changes the size of allocation of a ptr to size, if not enough room will malloc again and copy over as much as possible, free the original and return the new ptr
 		strncat = concatenates n characters of s2 to s1
 		strncpy = copies len chars from src to dst, returns dst
 		strnew = creates a 0 initialized string of size
 		strdel = deletes / frees a string via its pointer
 		strdup = mallocs for a new string and copies an inputed str
 		strjoin = mallocs for and concatenates two strings
+		strsub = 
 
 		need to count the bytes read?
 		
-
+		EOL determined by behavior of read function (-1 or 0)
 		*/
 	}
 	printf("END OF FUNCTION!!!\n");
