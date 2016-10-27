@@ -12,7 +12,7 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFF_SIZE 10
+# define BUFF_SIZE 5
 
 # define ANSI_RESET "\033[0m"
 
@@ -60,7 +60,7 @@ typedef struct	s_overflow
 {
 	int					fd;
 	int					loc;
-	char				*data;
+	char				*buffer;
 	// struct s_overflow	*next;
 }				t_overflow;
 

@@ -13,41 +13,65 @@
 #include "get_next_line.h"
 #include <stdio.h> // REMOVE LATER!!!
 
-static t_file		*create_or_return_content(const int fd, t_list **file_list_ptr)
+static t_overflow	*content_detective(const int fd, t_list **file_list_ptr)
 {
-	t_list			*file;
+	t_list			*file_list;
 	t_overflow		file_info;
 
-	
+	file_list = *file_list_ptr;
+	while (file_list)
+	{
+		if (((t_overflow *)(file_list->content))->fd == fd)
+			return (file_list->content);
+		file_list = file_list->next;
+	}
+	file_info.fd = fd;
+	if (!(file_info.buffer = ft_strnew(BUFF_SIZE)))
+		return (NULL);
+	if (!(file_list = ft_lstnew(&file_info, sizeof(t_overflow))))
+		return (NULL);
+	ft_lstadd(file_list_ptr, file_list);
+	return ((*file_list_ptr)->content);
 }
 
 int					get_next_line(const int fd, char **line)
 {
 	static t_list	*file_list;
+	t_overflow		*file;
 	char			buf[BUFF_SIZE + 1];
-	size_t			len;
-	size_t			i;
+	ssize_t			rtn_bytes;
+	char			*end;
+	char			*tmp;
 
-	// if (!line || !fd)
-	// 	return (-1);
+	if (!line || !fd)
+		return (-1);
 	if (!(*line = (char *)malloc(sizeof(char) * (BUFF_SIZE))))
 		return (-1);
-	// zero-ing out the line passed via a pointer into the function to store buf
 	*line = ft_memset(*line, 0, BUFF_SIZE);
-	while (read(fd, buf, BUFF_SIZE) > 0)
+	file = content_detective(fd, &file_list);
+	rtn_bytes = 1;
+	while (rtn_bytes)
 	{
-		len = -1;
-		i = 0;
+		rtn_bytes = read(fd, buf, BUFF_SIZE);
 		buf[BUFF_SIZE] = '\0';
-		while (buf[i])
+		if (rtn_bytes < 1)
+			return ((rtn_bytes == 0) ? 0 : -1);
+		if (ft_strlen(buf) != (size_t)rtn_bytes)
+			return (-1);
+		printf("rtn_bytes = %zd\n", rtn_bytes);
+		if ((end = strchr(buf, '\n')) == NULL)
 		{
-			if (buf[i++] == '\n')
-			{
-				len = i;
-			}
+			printf("no newline\n");
+			file->buffer = ft_strjoin(file->buffer, buf);
+			printf("file->buffer after join = %s\n", file->buffer);
 		}
-		*line = strncpy(*line, buf, BUFF_SIZE);
-		return (1);
+		else
+		{
+			*end = '\0';
+			*line = strdup(ft_strjoin(file->buffer, buf));
+			file->buffer = strdup(end + 1);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -99,7 +123,7 @@ int main() // REMOVE LATER!!!!
 		printf(ANSI_F_CYAN "%zu" ANSI_RESET "\t|%s" ANSI_F_CYAN "$\n" ANSI_RESET, line_count, line);
 		free(line);
 	}
-	if (line_count != 12)
+	if (line_count != 3)
 		printf(ANSI_F_RED "ERROR: test_basic(...) failed.\n" ANSI_RESET);
 	else
 		printf(ANSI_F_GREEN "Done.\n" ANSI_RESET);	
