@@ -71,6 +71,7 @@ int					get_next_line(const int fd, char **line)
 			file->buffer = strdup(end + 1);
 			return (1);
 		}
+		// NOT HANDLING LAST LINE, NOT HANDLING newlines IN FIRST CHAR
 	}
 	return (0);
 }
