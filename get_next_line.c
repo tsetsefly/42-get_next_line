@@ -13,13 +13,20 @@
 #include "get_next_line.h"
 #include <stdio.h> // REMOVE LATER!!!
 
-
-
-int			get_next_line(const int fd, char **line)
+static t_file		*create_or_return_content(const int fd, t_list **file_list_ptr)
 {
-	char	buf[BUFF_SIZE + 1];
-	size_t	len;
-	size_t	i;
+	t_list			*file;
+	t_overflow		file_info;
+
+	
+}
+
+int					get_next_line(const int fd, char **line)
+{
+	static t_list	*file_list;
+	char			buf[BUFF_SIZE + 1];
+	size_t			len;
+	size_t			i;
 
 	// if (!line || !fd)
 	// 	return (-1);
@@ -46,21 +53,22 @@ int			get_next_line(const int fd, char **line)
 }
 
 /*
-	*realloc = changes the size of allocation of a ptr to size, if not enough room will malloc again and copy over as much as possible, free the original and return the new ptr
+	*realloc = changes the size of allocation of a ptr to size, if not enough room will malloc again and 
+		copy over as much as possible, free the original and return the new ptr (malloc and free)
 	strncat = concatenates n characters of s2 to s1
 	strncpy = copies len chars from src to dst, returns dst
-	strnew = creates a 0 initialized string of size
-	strdel = deletes / frees a string via its pointer
-	strdup = mallocs for a new string and copies an inputed str
-	strjoin = mallocs for and concatenates two strings
+	strnew = creates a 0 initialized string of size (malloc)
+	strdel = deletes / frees a string via its pointer (free)
+	strdup = mallocs for a new string and copies an inputed str (malloc)
+	strjoin = mallocs for and concatenates two strings (malloc)
 	strchr = locates the first occurance of char c in string s, returns pointer to that char
-	strsub = 
+	strsub = returns fresh substr beginning at at indexstart and is of size len (malloc)
 
 	EOL determined by behavior of read function (-1 or 0)
 */
 
 // MANDATORY
-// return value... 1: has been read, 0: reading has been completed, -1: error
+// return values = 1: has been read, 0: reading has been completed, -1: error
 // needs to handle redirections, from files, from the standard output
 // allowed to use read, malloc, free
 

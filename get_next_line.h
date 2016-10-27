@@ -58,9 +58,10 @@
 
 typedef struct	s_overflow
 {
-	int		fd;
-	int		loc;
-	char	*data;
+	int					fd;
+	int					loc;
+	char				*data;
+	// struct s_overflow	*next;
 }				t_overflow;
 
 int get_next_line(const int fd, char **line);
