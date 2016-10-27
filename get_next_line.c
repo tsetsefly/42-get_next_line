@@ -41,7 +41,6 @@ int					get_next_line(const int fd, char **line)
 	char			buf[BUFF_SIZE + 1];
 	ssize_t			rtn_bytes;
 	char			*end;
-	char			*tmp;
 
 	if (!line || !fd)
 		return (-1);
@@ -58,12 +57,12 @@ int					get_next_line(const int fd, char **line)
 			return ((rtn_bytes == 0) ? 0 : -1);
 		if (ft_strlen(buf) != (size_t)rtn_bytes)
 			return (-1);
-		printf("rtn_bytes = %zd\n", rtn_bytes);
+		// printf("rtn_bytes = %zd\n", rtn_bytes);
 		if ((end = strchr(buf, '\n')) == NULL)
 		{
-			printf("no newline\n");
+			// printf("no newline\n");
 			file->buffer = ft_strjoin(file->buffer, buf);
-			printf("file->buffer after join = %s\n", file->buffer);
+			// printf("file->buffer after join = %s\n", file->buffer);
 		}
 		else
 		{
@@ -109,7 +108,7 @@ int main() // REMOVE LATER!!!!
 	line_count = 0;
 	line = NULL;
 	printf("Opening file... ");
-	fd = open("hello_world.txt", O_RDONLY);
+	fd = open("test_basic_dino.txt", O_RDONLY);
 	if (fd < 0)
 	{
 		printf(ANSI_F_RED "Error opening %s.\n" ANSI_RESET, "test_basic_dino.txt");
@@ -127,7 +126,7 @@ int main() // REMOVE LATER!!!!
 		printf(ANSI_F_RED "ERROR: test_basic(...) failed.\n" ANSI_RESET);
 	else
 		printf(ANSI_F_GREEN "Done.\n" ANSI_RESET);	
-	printf(ANSI_F_YELLOW "[ Lines Expected: 3, Lines Read: %zu ]\n" ANSI_RESET, line_count);
+	printf(ANSI_F_YELLOW "[ Lines Expected: 12, Lines Read: %zu ]\n" ANSI_RESET, line_count);
 	fd = close(fd);
 	if (fd < 0)
 	{
