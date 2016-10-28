@@ -44,36 +44,47 @@ int					get_next_line(const int fd, char **line)
 
 	if (!line || !fd)
 		return (-1);
-	if (!(*line = (char *)malloc(sizeof(char) * (BUFF_SIZE))))
-		return (-1);
-	*line = ft_memset(*line, 0, BUFF_SIZE);
 	file = content_detective(fd, &file_list);
 	rtn_bytes = 1;
-	while (rtn_bytes)
+	while (/*rtn_bytes*/1)
 	{
-		rtn_bytes = read(fd, buf, BUFF_SIZE);
-		buf[BUFF_SIZE] = '\0';
-		if (rtn_bytes < 1)
-			return ((rtn_bytes == 0) ? 0 : -1);
-		if (ft_strlen(buf) != (size_t)rtn_bytes)
-			return (-1);
-		// printf("rtn_bytes = %zd\n", rtn_bytes);
-		if ((end = strchr(buf, '\n')) == NULL)
+		if ((ft_strchr(file->buffer, '\n')) == NULL)
 		{
-			// printf("no newline\n");
-			file->buffer = ft_strjoin(file->buffer, buf);
-			// printf("file->buffer after join = %s\n", file->buffer);
+			rtn_bytes = read(fd, buf, BUFF_SIZE);
+			buf[BUFF_SIZE] = '\0';
 		}
-		else
+		printf("->STORAGE->%s\n", file->buffer);
+		printf("->BUF->%s\n", buf);
+		if ((end = ft_strchr(file->buffer, '\n')))
 		{
+			printf("->Newlines in STORAGE!\n");
 			*end = '\0';
-			*line = strdup(ft_strjoin(file->buffer, buf));
-			file->buffer = strdup(end + 1);
+			*line = ft_strdup(file->buffer);
+			file->buffer = ft_strdup(end + 1);
+			return (1);	
+		}
+		else if ((end = ft_strchr(buf, '\n')) == NULL)
+		{
+			printf("->NO newlines in BUF!\n");
+			file->buffer = ft_strjoin(file->buffer, buf);
+		}
+		else if ((end = ft_strchr(buf, '\n')))
+		{
+			printf("->Newlines in BUF!\n");
+			*end = '\0';
+			*line = ft_strdup(ft_strjoin(file->buffer, buf));
+			file->buffer = ft_strdup(end + 1);
 			return (1);
 		}
-		// NOT HANDLING LAST LINE, NOT HANDLING newlines IN FIRST CHAR
+		if (rtn_bytes < 1)
+			return ((rtn_bytes == 0) ? 0 : -1);
 	}
 	return (0);
+	// if (ft_strlen(buf) != (size_t)rtn_bytes)a
+		// 	return (-1);
+	// if (!(*line = (char *)malloc(sizeof(char) * (BUFF_SIZE))))
+	// 	return (-1);
+	// *line = ft_memset(*line, 0, BUFF_SIZE);
 }
 
 /*
@@ -109,7 +120,9 @@ int main() // REMOVE LATER!!!!
 	line_count = 0;
 	line = NULL;
 	printf("Opening file... ");
-	fd = open("test_basic_dino.txt", O_RDONLY);
+	// fd = open("3_hello_world.txt", O_RDONLY);
+	// fd = open("12_test_basic_dino.txt", O_RDONLY);
+	fd = open("1_aaa_no_newline.txt", O_RDONLY);
 	if (fd < 0)
 	{
 		printf(ANSI_F_RED "Error opening %s.\n" ANSI_RESET, "test_basic_dino.txt");
@@ -117,17 +130,18 @@ int main() // REMOVE LATER!!!!
 	}
 	printf("Done.\n");
 	printf(ANSI_F_YELLOW "Reading Lines...\n" ANSI_RESET);
+	printf("BUFF_SIZE = %d!\n", (int)BUFF_SIZE);
 	while (get_next_line(fd, &line))
 	{
 		line_count++;
 		printf(ANSI_F_CYAN "%zu" ANSI_RESET "\t|%s" ANSI_F_CYAN "$\n" ANSI_RESET, line_count, line);
 		free(line);
 	}
-	if (line_count != 3)
+	if (line_count != 12)
 		printf(ANSI_F_RED "ERROR: test_basic(...) failed.\n" ANSI_RESET);
 	else
 		printf(ANSI_F_GREEN "Done.\n" ANSI_RESET);	
-	printf(ANSI_F_YELLOW "[ Lines Expected: 12, Lines Read: %zu ]\n" ANSI_RESET, line_count);
+	printf(ANSI_F_YELLOW "[ Lines Expected: 1, Lines Read: %zu ]\n" ANSI_RESET, line_count);
 	fd = close(fd);
 	if (fd < 0)
 	{

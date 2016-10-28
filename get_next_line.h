@@ -12,8 +12,9 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFF_SIZE 5
+# define BUFF_SIZE 15
 
+// comment out when running tinfoil test suite
 # define ANSI_RESET "\033[0m"
 
 # define ANSI_F_RED "\033[31m"
@@ -54,14 +55,12 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/uio.h>
-# include "libft/libft.h"
+# include "libft/libft.h" // need to switch to "libft.h" for Prateek's test... "libft/libft.h" for moulitest
 
 typedef struct	s_overflow
 {
 	int					fd;
-	int					loc;
 	char				*buffer;
-	// struct s_overflow	*next;
 }				t_overflow;
 
 int get_next_line(const int fd, char **line);
