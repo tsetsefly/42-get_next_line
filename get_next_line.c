@@ -90,7 +90,7 @@ int					get_next_line(const int fd, char **line)
 		// NEED TO HANDLE NO NEWLINE AT EOF
 	}
 	return (0);
-	// if (ft_strlen(buf) != (size_t)rtn_bytes)a
+	// if (ft_strlen(buf) != (size_t)rtn_bytes)
 		// 	return (-1);
 	// if (!(*line = (char *)malloc(sizeof(char) * (BUFF_SIZE))))
 	// 	return (-1);
