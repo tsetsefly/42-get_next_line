@@ -78,6 +78,7 @@ int					get_next_line(const int fd, char **line)
 		}
 		if (rtn_bytes < 1)
 			return ((rtn_bytes == 0) ? 0 : -1);
+		// NEED TO HANDLE NO NEWLINE AT EOF
 	}
 	return (0);
 	// if (ft_strlen(buf) != (size_t)rtn_bytes)a
