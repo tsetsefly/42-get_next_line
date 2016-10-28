@@ -52,6 +52,7 @@ int					get_next_line(const int fd, char **line)
 		{
 			rtn_bytes = read(fd, buf, BUFF_SIZE);
 			buf[BUFF_SIZE] = '\0';
+			printf("->RTN_BYTES->%zd\n", rtn_bytes);
 		}
 		printf("->STORAGE->%s\n", file->buffer);
 		printf("->BUF->%s\n", buf);
@@ -63,11 +64,19 @@ int					get_next_line(const int fd, char **line)
 			file->buffer = ft_strdup(end + 1);
 			return (1);	
 		}
-		else if ((end = ft_strchr(buf, '\n')) == NULL)
+		else if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
+		{
+			printf("->rtn_bytes < BUFF_SIZE && rtn_bytes < 0!\n");
+			buf[rtn_bytes] = '\0';
+			*line = ft_strdup(buf);
+			return (1);
+		}
+		else if ((end = ft_strchr(buf, '\n')) == NULL && rtn_bytes)
 		{
 			printf("->NO newlines in BUF!\n");
 			file->buffer = ft_strjoin(file->buffer, buf);
 		}
+		
 		else if ((end = ft_strchr(buf, '\n')))
 		{
 			printf("->Newlines in BUF!\n");
