@@ -52,34 +52,34 @@ int					get_next_line(const int fd, char **line)
 		{
 			rtn_bytes = read(fd, buf, BUFF_SIZE);
 			buf[BUFF_SIZE] = '\0';
-			printf("->RTN_BYTES->%zd\n", rtn_bytes);
+			// printf("->RTN_BYTES->%zd\n", rtn_bytes);
 		}
-		printf("->STORAGE->%s\n", file->buffer);
-		printf("->BUF->%s\n", buf);
+		// printf("->STORAGE->%s\n", file->buffer);
+		// printf("->BUF->%s\n", buf);
 		if ((end = ft_strchr(file->buffer, '\n')))
 		{
-			printf("->Newlines in STORAGE!\n");
+			// printf("->Newlines in STORAGE!\n");
 			*end = '\0';
 			*line = ft_strdup(file->buffer);
 			file->buffer = ft_strdup(end + 1);
 			return (1);	
 		}
-		else if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
+		else if (!(end = ft_strchr(buf, '\n')))
 		{
-			printf("->rtn_bytes < BUFF_SIZE && rtn_bytes < 0!\n");
-			buf[rtn_bytes] = '\0';
-			*line = ft_strdup(buf);
-			return (1);
-		}
-		else if ((end = ft_strchr(buf, '\n')) == NULL && rtn_bytes)
-		{
-			printf("->NO newlines in BUF!\n");
+			// printf("->NO newlines in BUF!\n");
 			file->buffer = ft_strjoin(file->buffer, buf);
+			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
+			{
+				// printf("->rtn_bytes < BUFF_SIZE && rtn_bytes < 0!\n");
+				buf[rtn_bytes] = '\0';
+				*line = ft_strdup(buf);
+				return (1);
+			}	
 		}
 		
 		else if ((end = ft_strchr(buf, '\n')))
 		{
-			printf("->Newlines in BUF!\n");
+			// printf("->Newlines in BUF!\n");
 			*end = '\0';
 			*line = ft_strdup(ft_strjoin(file->buffer, buf));
 			file->buffer = ft_strdup(end + 1);
@@ -121,45 +121,45 @@ int					get_next_line(const int fd, char **line)
 // need to accomplish with one static variable
 // need to be able to handle multiple file descriptors with interleaved calls of get_next_line
 
-int main() // REMOVE LATER!!!!
-{
-	size_t	line_count;
-	char	*line;
-	int		fd;
+// int main() // REMOVE LATER!!!!
+// {
+// 	size_t	line_count;
+// 	char	*line;
+// 	int		fd;
 
-	line_count = 0;
-	line = NULL;
-	printf("Opening file... ");
-	// fd = open("3_hello_world.txt", O_RDONLY);
-	// fd = open("12_test_basic_dino.txt", O_RDONLY);
-	fd = open("1_aaa_no_newline.txt", O_RDONLY);
-	if (fd < 0)
-	{
-		printf(ANSI_F_RED "Error opening %s.\n" ANSI_RESET, "test_basic_dino.txt");
-		return (0);
-	}
-	printf("Done.\n");
-	printf(ANSI_F_YELLOW "Reading Lines...\n" ANSI_RESET);
-	printf("BUFF_SIZE = %d!\n", (int)BUFF_SIZE);
-	while (get_next_line(fd, &line))
-	{
-		line_count++;
-		printf(ANSI_F_CYAN "%zu" ANSI_RESET "\t|%s" ANSI_F_CYAN "$\n" ANSI_RESET, line_count, line);
-		free(line);
-	}
-	if (line_count != 12)
-		printf(ANSI_F_RED "ERROR: test_basic(...) failed.\n" ANSI_RESET);
-	else
-		printf(ANSI_F_GREEN "Done.\n" ANSI_RESET);	
-	printf(ANSI_F_YELLOW "[ Lines Expected: 1, Lines Read: %zu ]\n" ANSI_RESET, line_count);
-	fd = close(fd);
-	if (fd < 0)
-	{
-		printf(ANSI_F_BRED "Fatal Error: Could not close open file.\n" ANSI_RESET);
-		exit(EXIT_FAILURE);
-	}
-	return (0);
-}
+// 	line_count = 0;
+// 	line = NULL;
+// 	printf("Opening file... ");
+// 	// fd = open("3_hello_world.txt", O_RDONLY);
+// 	// fd = open("12_test_basic_dino.txt", O_RDONLY);
+// 	// fd = open("1_aaa_no_newline.txt", O_RDONLY);
+// 	if (fd < 0)
+// 	{
+// 		printf(ANSI_F_RED "Error opening %s.\n" ANSI_RESET, "test_basic_dino.txt");
+// 		return (0);
+// 	}
+// 	printf("Done.\n");
+// 	printf(ANSI_F_YELLOW "Reading Lines...\n" ANSI_RESET);
+// 	printf("BUFF_SIZE = %d!\n", (int)BUFF_SIZE);
+// 	while (get_next_line(fd, &line))
+// 	{
+// 		line_count++;
+// 		printf(ANSI_F_CYAN "%zu" ANSI_RESET "\t|%s" ANSI_F_CYAN "$\n" ANSI_RESET, line_count, line);
+// 		free(line);
+// 	}
+// 	if (line_count != 3)
+// 		printf(ANSI_F_RED "ERROR: test_basic(...) failed.\n" ANSI_RESET);
+// 	else
+// 		printf(ANSI_F_GREEN "Done.\n" ANSI_RESET);	
+// 	printf(ANSI_F_YELLOW "[ Lines Expected: 3, Lines Read: %zu ]\n" ANSI_RESET, line_count);
+// 	fd = close(fd);
+// 	if (fd < 0)
+// 	{
+// 		printf(ANSI_F_BRED "Fatal Error: Could not close open file.\n" ANSI_RESET);
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	return (0);
+// }
 
 // #include "get_next_line.h"
 // #include <fcntl.h>
