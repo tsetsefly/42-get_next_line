@@ -46,7 +46,7 @@ int					get_next_line(const int fd, char **line)
 		return (-1);
 	file = content_detective(fd, &file_list);
 	rtn_bytes = 1;
-	while (/*rtn_bytes*/1)
+	while (rtn_bytes)
 	{
 		if ((ft_strchr(file->buffer, '\n')) == NULL)
 		{
@@ -68,9 +68,10 @@ int					get_next_line(const int fd, char **line)
 		{
 			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
 			{
-				// printf("->rtn_bytes < BUFF_SIZE && rtn_bytes < 0!\n");
+				printf("->rtn_bytes < BUFF_SIZE && rtn_bytes < 0!\n");
 				buf[rtn_bytes] = '\0';
-				*line = ft_strdup(ft_strjoin(file->buffer, buf));
+				// *line = ft_strdup(ft_strjoin(file->buffer, buf));
+				*line = ft_strdup(buf);
 				return (1);
 			}	
 			// printf("->NO newlines in BUF!\n");
@@ -112,15 +113,6 @@ int					get_next_line(const int fd, char **line)
 	EOL determined by behavior of read function (-1 or 0)
 */
 
-// MANDATORY
-// return values = 1: has been read, 0: reading has been completed, -1: error
-// needs to handle redirections, from files, from the standard output
-// allowed to use read, malloc, free
-
-// BONUS
-// need to accomplish with one static variable
-// need to be able to handle multiple file descriptors with interleaved calls of get_next_line
-
 int main() // REMOVE LATER!!!!
 {
 	size_t	line_count;
@@ -145,6 +137,7 @@ int main() // REMOVE LATER!!!!
 	{
 		line_count++;
 		printf(ANSI_F_CYAN "%zu" ANSI_RESET "\t|%s" ANSI_F_CYAN "$\n" ANSI_RESET, line_count, line);
+		printf("strcmp(line, \"aaa\")->%d\n", strcmp(line, "aaa"));
 		free(line);
 	}
 	if (line_count != 1)
@@ -161,7 +154,7 @@ int main() // REMOVE LATER!!!!
 	return (0);
 }
 
-// #include "get_next_line.h"
+// #include "get_next_line.h" //
 // #include <fcntl.h>
 // #include <stdio.h>
 
