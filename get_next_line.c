@@ -34,6 +34,17 @@ static t_overflow	*content_detective(const int fd, t_list **file_list_ptr)
 	return ((*file_list_ptr)->content);
 }
 
+char				*ft_realloc(char *old_str, size_t len)
+{
+	char			*new_str;
+
+	new_str = (char*)malloc(sizeof(char) * len);
+	ft_bzero(new_str, len);
+	ft_memcpy(new_str, old_str, ft_strlen(old_str) + 1);
+	free(old_str);
+	return (new_str);
+}
+
 int					get_next_line(const int fd, char **line)
 {
 	static t_list	*file_list;
