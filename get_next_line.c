@@ -79,10 +79,10 @@ int					get_next_line(const int fd, char **line)
 		{
 			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
 			{
-				printf("->rtn_bytes < BUFF_SIZE && rtn_bytes < 0!\n");
+				// printf("->rtn_bytes < BUFF_SIZE && rtn_bytes < 0!\n");
 				buf[rtn_bytes] = '\0';
-				// *line = ft_strdup(ft_strjoin(file->buffer, buf));
-				*line = ft_strdup(buf);
+				*line = ft_strdup(ft_strjoin(file->buffer, buf));
+				// *line = ft_strdup(buf);
 				return (1);
 			}	
 			// printf("->NO newlines in BUF!\n");
@@ -124,46 +124,46 @@ int					get_next_line(const int fd, char **line)
 	EOL determined by behavior of read function (-1 or 0)
 */
 
-int main() // REMOVE LATER!!!!
-{
-	size_t	line_count;
-	char	*line;
-	int		fd;
+// int main() // REMOVE LATER!!!!
+// {
+// 	size_t	line_count;
+// 	char	*line;
+// 	int		fd;
 
-	line_count = 0;
-	line = NULL;
-	printf("Opening file... ");
-	// fd = open("3_hello_world.txt", O_RDONLY);
-	// fd = open("12_test_basic_dino.txt", O_RDONLY);
-	fd = open("1_aaa_no_newline.txt", O_RDONLY);
-	if (fd < 0)
-	{
-		printf(ANSI_F_RED "Error opening %s.\n" ANSI_RESET, "test_basic_dino.txt");
-		return (0);
-	}
-	printf("Done.\n");
-	printf(ANSI_F_YELLOW "Reading Lines...\n" ANSI_RESET);
-	printf("BUFF_SIZE = %d!\n", (int)BUFF_SIZE);
-	while (get_next_line(fd, &line))
-	{
-		line_count++;
-		printf(ANSI_F_CYAN "%zu" ANSI_RESET "\t|%s" ANSI_F_CYAN "$\n" ANSI_RESET, line_count, line);
-		printf("strcmp(line, \"aaa\")->%d\n", strcmp(line, "aaa"));
-		free(line);
-	}
-	if (line_count != 1)
-		printf(ANSI_F_RED "ERROR: test_basic(...) failed.\n" ANSI_RESET);
-	else
-		printf(ANSI_F_GREEN "Done.\n" ANSI_RESET);	
-	printf(ANSI_F_YELLOW "[ Lines Expected: 1, Lines Read: %zu ]\n" ANSI_RESET, line_count);
-	fd = close(fd);
-	if (fd < 0)
-	{
-		printf(ANSI_F_BRED "Fatal Error: Could not close open file.\n" ANSI_RESET);
-		exit(EXIT_FAILURE);
-	}
-	return (0);
-}
+// 	line_count = 0;
+// 	line = NULL;
+// 	printf("Opening file... ");
+// 	// fd = open("3_hello_world.txt", O_RDONLY);
+// 	// fd = open("12_test_basic_dino.txt", O_RDONLY);
+// 	fd = open("1_aaa_no_newline.txt", O_RDONLY);
+// 	if (fd < 0)
+// 	{
+// 		printf(ANSI_F_RED "Error opening %s.\n" ANSI_RESET, "test_basic_dino.txt");
+// 		return (0);
+// 	}
+// 	printf("Done.\n");
+// 	printf(ANSI_F_YELLOW "Reading Lines...\n" ANSI_RESET);
+// 	printf("BUFF_SIZE = %d!\n", (int)BUFF_SIZE);
+// 	while (get_next_line(fd, &line))
+// 	{
+// 		line_count++;
+// 		printf(ANSI_F_CYAN "%zu" ANSI_RESET "\t|%s" ANSI_F_CYAN "$\n" ANSI_RESET, line_count, line);
+// 		printf("strcmp(line, \"aaa\")->%d\n", strcmp(line, "aaa"));
+// 		free(line);
+// 	}
+// 	if (line_count != 1)
+// 		printf(ANSI_F_RED "ERROR: test_basic(...) failed.\n" ANSI_RESET);
+// 	else
+// 		printf(ANSI_F_GREEN "Done.\n" ANSI_RESET);	
+// 	printf(ANSI_F_YELLOW "[ Lines Expected: 1, Lines Read: %zu ]\n" ANSI_RESET, line_count);
+// 	fd = close(fd);
+// 	if (fd < 0)
+// 	{
+// 		printf(ANSI_F_BRED "Fatal Error: Could not close open file.\n" ANSI_RESET);
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	return (0);
+// }
 
 // #include "get_next_line.h" //
 // #include <fcntl.h>
