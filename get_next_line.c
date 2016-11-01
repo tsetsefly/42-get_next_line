@@ -45,6 +45,13 @@ char				*ft_realloc(char *old_str, size_t len)
 	return (new_str);
 }
 
+	// ZERO OUT BUFFER
+	// ZERO OUT LINE?
+	// concat onto line if no newline?
+	// use realloc?
+	// NEED TO FREE LISTS
+	// NOT HANDLING LAST LINES CONSISTENTLY
+
 int					get_next_line(const int fd, char **line)
 {
 	static t_list	*file_list;
@@ -56,39 +63,50 @@ int					get_next_line(const int fd, char **line)
 	if (!line || !fd)
 		return (-1);
 	file = content_detective(fd, &file_list);
+	// printf("->FILE->FD%d VS. FD=%d\n", file->fd, fd);
 	rtn_bytes = 1;
-	while (rtn_bytes)
+	if ((end = ft_strchr(file->buffer, '\n')))
 	{
-		if ((ft_strchr(file->buffer, '\n')) == NULL)
-		{
-			rtn_bytes = read(fd, buf, BUFF_SIZE);
-			buf[BUFF_SIZE] = '\0';
-			// printf("->RTN_BYTES->%zd\n", rtn_bytes);
-		}
-		// printf("->STORAGE->%s\n", file->buffer);
+		// printf("->Newlines in STORAGE!\n");
+		// printf("->FIRST_STORAGE->%s\n", file->buffer);
+		*end = '\0';
+		*line = ft_strdup(file->buffer);
+		file->buffer = ft_strdup(end + 1);
+		return (1);
+	}
+	while (rtn_bytes != -1 && (rtn_bytes = read(fd, buf, BUFF_SIZE)))
+	{
+		buf[BUFF_SIZE] = '\0';
+		// printf("->RTN_BYTES->%zd\n", rtn_bytes);
+		// printf("->SECOND_STORAGE->%s\n", file->buffer);
 		// printf("->BUF->%s\n", buf);
-		if ((end = ft_strchr(file->buffer, '\n')))
+		if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
 		{
-			// printf("->Newlines in STORAGE!\n");
-			*end = '\0';
-			*line = ft_strdup(file->buffer);
-			file->buffer = ft_strdup(end + 1);
-			return (1);	
-		}
-		else if (!(end = ft_strchr(buf, '\n')))
-		{
-			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
+			buf[rtn_bytes] = '\0';
+			if (!(ft_strchr(buf, '\n')))
 			{
-				// printf("->rtn_bytes < BUFF_SIZE && rtn_bytes < 0!\n");
-				buf[rtn_bytes] = '\0';
 				*line = ft_strdup(ft_strjoin(file->buffer, buf));
-				// *line = ft_strdup(buf);
-				return (1);
-			}	
-			// printf("->NO newlines in BUF!\n");
+			}
+			else if ((end = ft_strchr(buf, '\n')))
+			{
+				*end = '\0';
+				*line = ft_strdup(ft_strjoin(file->buffer, buf));
+				file->buffer = ft_strdup(end + 1);
+			}
+			return (1);
+		}
+		if (!(ft_strchr(buf, '\n')))
+		{
+			// if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
+			// {
+			// 	// printf("->rtn_bytes < BUFF_SIZE && rtn_bytes < 0!\n");
+			// 	buf[rtn_bytes] = '\0';
+			// 	*line = ft_strdup(ft_strjoin(file->buffer, buf));
+			// 	return (1);
+			// }
+			// // printf("->NO newlines in BUF and not EOF!\n");
 			file->buffer = ft_strjoin(file->buffer, buf);
 		}
-		
 		else if ((end = ft_strchr(buf, '\n')))
 		{
 			// printf("->Newlines in BUF!\n");
@@ -97,11 +115,16 @@ int					get_next_line(const int fd, char **line)
 			file->buffer = ft_strdup(end + 1);
 			return (1);
 		}
-		if (rtn_bytes < 1)
-			return ((rtn_bytes == 0) ? 0 : -1);
-		// NEED TO HANDLE NO NEWLINE AT EOF
 	}
-	return (0);
+	if (ft_strlen(file->buffer) && rtn_bytes != -1)
+	{
+		// file->buffer[ft_strlen(file->buffer)] = '\0';
+		// printf("->FINAL_STORAGE->%s\n", file->buffer);
+		*line = ft_strdup(file->buffer);
+		bzero(file->buffer, ft_strlen(file->buffer));
+		return (1);
+	}
+	return (rtn_bytes);
 	// if (ft_strlen(buf) != (size_t)rtn_bytes)
 		// 	return (-1);
 	// if (!(*line = (char *)malloc(sizeof(char) * (BUFF_SIZE))))

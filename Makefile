@@ -40,7 +40,7 @@ $(LIBFT):
 	make -C ./libft
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LIBLINK) -o $@ $^ -fsanitize=address
+	$(CC) $(CFLAGS) $(LIBLINK) -o $@ $^ #-fsanitize=address
 
 clean: rm -rf build/
 
