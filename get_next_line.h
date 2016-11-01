@@ -12,7 +12,7 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFF_SIZE 15
+# define BUFF_SIZE 32
 
 // comment out when running tinfoil test suite
 // # define ANSI_RESET "\033[0m"
@@ -61,7 +61,6 @@
 typedef struct	s_overflow
 {
 	int					fd;
-	int					loc;
 	char				*buffer;
 }				t_overflow;
 

@@ -34,16 +34,16 @@ static t_overflow	*content_detective(const int fd, t_list **file_list_ptr)
 	return ((*file_list_ptr)->content);
 }
 
-char				*ft_realloc(char *old_str, size_t len)
-{
-	char			*new_str;
+// char				*ft_realloc(char *old_str, size_t len)
+// {
+// 	char			*new_str;
 
-	new_str = (char*)malloc(sizeof(char) * len);
-	ft_bzero(new_str, len);
-	ft_memcpy(new_str, old_str, ft_strlen(old_str) + 1);
-	free(old_str);
-	return (new_str);
-}
+// 	new_str = (char*)malloc(sizeof(char) * len);
+// 	ft_bzero(new_str, len);
+// 	ft_memcpy(new_str, old_str, ft_strlen(old_str) + 1);
+// 	free(old_str);
+// 	return (new_str);
+// }
 
 	// ZERO OUT BUFFER
 	// ZERO OUT LINE?
@@ -51,6 +51,26 @@ char				*ft_realloc(char *old_str, size_t len)
 	// use realloc?
 	// NEED TO FREE LISTS
 	// NOT HANDLING LAST LINES CONSISTENTLY
+
+void	ft_list_clear(t_list **begin_list, int fd)
+{
+	t_list *tmp;
+	t_list *list;
+
+	list = *begin_list;
+	if (!list)
+		return ;
+	while (list)
+	{
+		if (((t_overflow *)(list->content))->fd == fd)
+		{
+			tmp = list->next;
+			free(list);
+			list = tmp;	
+		}
+	}
+	*begin_list = 0;
+}
 
 int					get_next_line(const int fd, char **line)
 {
@@ -125,6 +145,8 @@ int					get_next_line(const int fd, char **line)
 		bzero(file->buffer, ft_strlen(file->buffer));
 		return (1);
 	}
+	// if (rtn_bytes == 0)
+	// 	ft_list_clear(file_list, fd);
 	return (rtn_bytes);
 	// if (ft_strlen(buf) != (size_t)rtn_bytes)
 		// 	return (-1);
@@ -159,7 +181,8 @@ int					get_next_line(const int fd, char **line)
 // 	printf("Opening file... ");
 // 	// fd = open("3_hello_world.txt", O_RDONLY);
 // 	// fd = open("12_test_basic_dino.txt", O_RDONLY);
-// 	fd = open("1_aaa_no_newline.txt", O_RDONLY);
+// 	// fd = open("1_aaa_no_newline.txt", O_RDONLY);
+// 	fd = open("16_abcdefghijklmnop_newline.txt", O_RDONLY);
 // 	if (fd < 0)
 // 	{
 // 		printf(ANSI_F_RED "Error opening %s.\n" ANSI_RESET, "test_basic_dino.txt");
@@ -172,7 +195,7 @@ int					get_next_line(const int fd, char **line)
 // 	{
 // 		line_count++;
 // 		printf(ANSI_F_CYAN "%zu" ANSI_RESET "\t|%s" ANSI_F_CYAN "$\n" ANSI_RESET, line_count, line);
-// 		printf("strcmp(line, \"aaa\")->%d\n", strcmp(line, "aaa"));
+// 		printf("strcmp(line, \"abcdefghijklmnop\")->%d\n", strcmp(line, "abcdefghijklmnop"));
 // 		free(line);
 // 	}
 // 	if (line_count != 1)
