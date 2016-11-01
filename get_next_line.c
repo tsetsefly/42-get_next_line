@@ -86,6 +86,7 @@ int					get_next_line(const int fd, char **line)
 			if (!(ft_strchr(buf, '\n')))
 			{
 				*line = ft_strdup(ft_strjoin(file->buffer, buf));
+				bzero(file->buffer, ft_strlen(file->buffer));
 			}
 			else if ((end = ft_strchr(buf, '\n')))
 			{
