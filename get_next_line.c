@@ -52,25 +52,25 @@ static t_overflow	*content_detective(const int fd, t_list **file_list_ptr)
 	// NEED TO FREE LISTS
 	// NOT HANDLING LAST LINES CONSISTENTLY
 
-void	ft_list_clear(t_list **begin_list, int fd)
-{
-	t_list *tmp;
-	t_list *list;
+// void	ft_list_clear(t_list **begin_list, int fd)
+// {
+// 	t_list *tmp;
+// 	t_list *list;
 
-	list = *begin_list;
-	if (!list)
-		return ;
-	while (list)
-	{
-		if (((t_overflow *)(list->content))->fd == fd)
-		{
-			tmp = list->next;
-			free(list);
-			list = tmp;	
-		}
-	}
-	*begin_list = 0;
-}
+// 	list = *begin_list;
+// 	if (!list)
+// 		return ;
+// 	while (list)
+// 	{
+// 		if (((t_overflow *)(list->content))->fd == fd)
+// 		{
+// 			tmp = list->next;
+// 			free(list);
+// 			list = tmp;	
+// 		}
+// 	}
+// 	*begin_list = 0;
+// }
 
 int					get_next_line(const int fd, char **line)
 {
@@ -84,76 +84,60 @@ int					get_next_line(const int fd, char **line)
 		return (-1);
 	file = content_detective(fd, &file_list);
 	// printf("->FILE->FD%d VS. FD=%d\n", file->fd, fd);
-	rtn_bytes = 1;
+	// rtn_bytes = 1;
 	if ((end = ft_strchr(file->buffer, '\n')))
 	{
-		// printf("->Newlines in STORAGE!\n");
 		// printf("->FIRST_STORAGE->%s\n", file->buffer);
 		*end = '\0';
 		*line = ft_strdup(file->buffer);
+		// file->buffer = end + 1;
 		file->buffer = ft_strdup(end + 1);
 		return (1);
 	}
-	while (rtn_bytes != -1 && (rtn_bytes = read(fd, buf, BUFF_SIZE)))
+	while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		buf[BUFF_SIZE] = '\0';
-		// printf("->RTN_BYTES->%zd\n", rtn_bytes);
-		// printf("->SECOND_STORAGE->%s\n", file->buffer);
-		// printf("->BUF->%s\n", buf);
 		if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
-		{
 			buf[rtn_bytes] = '\0';
-			if (!(ft_strchr(buf, '\n')))
-			{
-				*line = ft_strdup(ft_strjoin(file->buffer, buf));
-				bzero(file->buffer, ft_strlen(file->buffer));
-			}
-			else if ((end = ft_strchr(buf, '\n')))
-			{
-				*end = '\0';
-				*line = ft_strdup(ft_strjoin(file->buffer, buf));
-				file->buffer = ft_strdup(end + 1);
-			}
-			return (1);
-		}
-		if (!(ft_strchr(buf, '\n')))
+		else
+			buf[BUFF_SIZE] = '\0';
+		// printf("->RTN_BYTES->%zd\n", rtn_bytes);
+		// printf("->LOOP_STORAGE->%s\n", file->buffer);
+		// printf("->FIRST_READ_BUF->%s\n", buf);
+		if (!(end = ft_strchr(buf, '\n')))
 		{
-			// if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
-			// {
-			// 	// printf("->rtn_bytes < BUFF_SIZE && rtn_bytes < 0!\n");
-			// 	buf[rtn_bytes] = '\0';
-			// 	*line = ft_strdup(ft_strjoin(file->buffer, buf));
-			// 	return (1);
-			// }
-			// // printf("->NO newlines in BUF and not EOF!\n");
-			file->buffer = ft_strjoin(file->buffer, buf);
+			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
+			{
+				*line = ft_strjoin(file->buffer, buf);
+				bzero(file->buffer, ft_strlen(file->buffer));
+				return (1);
+			}
+			file->buffer = ft_strjoin(file->buffer, buf); // copy to line... extending in the line only
 		}
-		else if ((end = ft_strchr(buf, '\n')))
+		else// if ((end = ft_strchr(buf, '\n')))
 		{
 			// printf("->Newlines in BUF!\n");
 			*end = '\0';
-			*line = ft_strdup(ft_strjoin(file->buffer, buf));
+			*line = ft_strjoin(file->buffer, buf);
+			// file->buffer = end + 1;
 			file->buffer = ft_strdup(end + 1);
 			return (1);
 		}
 	}
 	if (ft_strlen(file->buffer) && rtn_bytes != -1)
 	{
-		// file->buffer[ft_strlen(file->buffer)] = '\0';
 		// printf("->FINAL_STORAGE->%s\n", file->buffer);
 		*line = ft_strdup(file->buffer);
 		bzero(file->buffer, ft_strlen(file->buffer));
 		return (1);
 	}
-	// if (rtn_bytes == 0)
-	// 	ft_list_clear(file_list, fd);
 	return (rtn_bytes);
-	// if (ft_strlen(buf) != (size_t)rtn_bytes)
-		// 	return (-1);
-	// if (!(*line = (char *)malloc(sizeof(char) * (BUFF_SIZE))))
-	// 	return (-1);
-	// *line = ft_memset(*line, 0, BUFF_SIZE);
 }
+
+// if (ft_strlen(buf) != (size_t)rtn_bytes)
+// 	return (-1);
+// if (!(*line = (char *)malloc(sizeof(char) * (BUFF_SIZE))))
+// 	return (-1);
+// *line = ft_memset(*line, 0, BUFF_SIZE);
 
 /*
 	*realloc = changes the size of allocation of a ptr to size, if not enough room will malloc again and 
@@ -182,7 +166,8 @@ int					get_next_line(const int fd, char **line)
 // 	// fd = open("3_hello_world.txt", O_RDONLY);
 // 	// fd = open("12_test_basic_dino.txt", O_RDONLY);
 // 	// fd = open("1_aaa_no_newline.txt", O_RDONLY);
-// 	fd = open("16_abcdefghijklmnop_newline.txt", O_RDONLY);
+// 	// fd = open("16_abcdefghijklmnop_newline.txt", O_RDONLY);
+// 	fd = open("one_big_fat_line.txt", O_RDONLY);
 // 	if (fd < 0)
 // 	{
 // 		printf(ANSI_F_RED "Error opening %s.\n" ANSI_RESET, "test_basic_dino.txt");
@@ -195,14 +180,14 @@ int					get_next_line(const int fd, char **line)
 // 	{
 // 		line_count++;
 // 		printf(ANSI_F_CYAN "%zu" ANSI_RESET "\t|%s" ANSI_F_CYAN "$\n" ANSI_RESET, line_count, line);
-// 		printf("strcmp(line, \"abcdefghijklmnop\")->%d\n", strcmp(line, "abcdefghijklmnop"));
+// 		// printf("strcmp(line, \"abcdefghijklmnop\")->%d\n", strcmp(line, "abcdefghijklmnop"));
 // 		free(line);
 // 	}
-// 	if (line_count != 1)
+// 	if (line_count != 2)
 // 		printf(ANSI_F_RED "ERROR: test_basic(...) failed.\n" ANSI_RESET);
 // 	else
 // 		printf(ANSI_F_GREEN "Done.\n" ANSI_RESET);	
-// 	printf(ANSI_F_YELLOW "[ Lines Expected: 1, Lines Read: %zu ]\n" ANSI_RESET, line_count);
+// 	printf(ANSI_F_YELLOW "[ Lines Expected: 2, Lines Read: %zu ]\n" ANSI_RESET, line_count);
 // 	fd = close(fd);
 // 	if (fd < 0)
 // 	{
@@ -212,7 +197,7 @@ int					get_next_line(const int fd, char **line)
 // 	return (0);
 // }
 
-// #include "get_next_line.h" //
+// #include "get_next_line.h"
 // #include <fcntl.h>
 // #include <stdio.h>
 

@@ -12,7 +12,7 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFF_SIZE 32
+# define BUFF_SIZE 1
 
 // comment out when running tinfoil test suite
 // # define ANSI_RESET "\033[0m"
