@@ -84,12 +84,12 @@ int					get_next_line(const int fd, char **line)
 		return (-1);
 	file = content_detective(fd, &file_list);
 	// printf("->FILE->FD%d VS. FD=%d\n", file->fd, fd);
-	// *line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + BUFF_SIZE + 1));
+	*line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + BUFF_SIZE + 1));
 	if ((end = ft_strchr(file->buffer, '\n')))
 	{
 		// printf("->FIRST_STORAGE->%s\n", file->buffer);
 		*end = '\0';
-		*line = (char *)ft_realloc(*line, ft_strlen(file->buffer));
+		// *line = (char *)ft_realloc(*line, ft_strlen(file->buffer));
 		*line = ft_strcpy(*line, file->buffer);
 		// *line = ft_strdup(file->buffer);
 		file->buffer = ft_strcpy(file->buffer, (end + 1));
@@ -97,6 +97,7 @@ int					get_next_line(const int fd, char **line)
 		return (1);
 	}
 	// *line = ft_strcpy(*line, file->buffer);
+
 	while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
@@ -110,6 +111,8 @@ int					get_next_line(const int fd, char **line)
 		{
 			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
 			{
+				// printf("->BUF->%s\n", buf);
+				// *line = ft_strcat(*line, buf);
 				*line = ft_strjoin(file->buffer, buf);
 				bzero(file->buffer, ft_strlen(file->buffer));
 				return (1);
@@ -120,7 +123,6 @@ int					get_next_line(const int fd, char **line)
 		}
 		else// if ((end = ft_strchr(buf, '\n')))
 		{
-			// printf("->Newlines in BUF!\n");
 			*end = '\0';
 			*line = ft_strjoin(file->buffer, buf);
 			file->buffer = ft_strcpy(file->buffer, (end + 1));
@@ -131,14 +133,17 @@ int					get_next_line(const int fd, char **line)
 	if (ft_strlen(file->buffer) && rtn_bytes != -1)
 	{
 		// printf("->FINAL_STORAGE->%s\n", file->buffer);
-		*line = ft_strdup(file->buffer);
-		bzero(file->buffer, ft_strlen(file->buffer));
+		free(*line);
+		*line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + 1));
+		*line = ft_strcpy(*line, file->buffer);
+		// *line = ft_strdup(file->buffer);
+		bzero(file->buffer, ft_strlen(file->buffer)); // can replace with a function that clears the structs
 		return (1);
 	}
 	return (rtn_bytes);
 }
 
-// if (ft_strlen(buf) != (size_t)rtn_bytes)
+// if (ft_strlen(buf) != (size_t)rtn_bytes) 
 // 	return (-1);
 // if (!(*line = (char *)malloc(sizeof(char) * (BUFF_SIZE))))
 // 	return (-1);
@@ -155,8 +160,6 @@ int					get_next_line(const int fd, char **line)
 	strjoin = mallocs for and concatenates two strings (malloc)
 	strchr = locates the first occurance of char c in string s, returns pointer to that char
 	strsub = returns fresh substr beginning at at indexstart and is of size len (malloc)
-
-	EOL determined by behavior of read function (-1 or 0)
 */
 
 // int main() // REMOVE LATER!!!!
@@ -169,10 +172,10 @@ int					get_next_line(const int fd, char **line)
 // 	line = NULL;
 // 	printf("Opening file... ");
 // 	// fd = open("3_hello_world.txt", O_RDONLY);
-// 	// fd = open("12_test_basic_dino.txt", O_RDONLY);
+// 	fd = open("12_test_basic_dino.txt", O_RDONLY);
 // 	// fd = open("1_aaa_no_newline.txt", O_RDONLY);
 // 	// fd = open("16_abcdefghijklmnop_newline.txt", O_RDONLY);
-// 	fd = open("one_big_fat_line.txt", O_RDONLY);
+// 	// fd = open("one_big_fat_line.txt", O_RDONLY);
 // 	if (fd < 0)
 // 	{
 // 		printf(ANSI_F_RED "Error opening %s.\n" ANSI_RESET, "test_basic_dino.txt");
@@ -188,11 +191,11 @@ int					get_next_line(const int fd, char **line)
 // 		// printf("strcmp(line, \"abcdefghijklmnop\")->%d\n", strcmp(line, "abcdefghijklmnop"));
 // 		free(line);
 // 	}
-// 	if (line_count != 2)
+// 	if (line_count != 12)
 // 		printf(ANSI_F_RED "ERROR: test_basic(...) failed.\n" ANSI_RESET);
 // 	else
 // 		printf(ANSI_F_GREEN "Done.\n" ANSI_RESET);	
-// 	printf(ANSI_F_YELLOW "[ Lines Expected: 2, Lines Read: %zu ]\n" ANSI_RESET, line_count);
+// 	printf(ANSI_F_YELLOW "[ Lines Expected: 12, Lines Read: %zu ]\n" ANSI_RESET, line_count);
 // 	fd = close(fd);
 // 	if (fd < 0)
 // 	{
