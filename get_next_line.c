@@ -26,7 +26,7 @@ static t_overflow	*content_detective(const int fd, t_list **file_list_ptr)
 		file_list = file_list->next;
 	}
 	file_info.fd = fd;
-	if (!(file_info.buffer = ft_strnew(BUFF_SIZE)))
+	if (!(file_info.buffer = ft_strnew(BUFF_SIZE + 1)))
 		return (NULL);
 	if (!(file_list = ft_lstnew(&file_info, sizeof(t_overflow))))
 		return (NULL);
@@ -34,16 +34,16 @@ static t_overflow	*content_detective(const int fd, t_list **file_list_ptr)
 	return ((*file_list_ptr)->content);
 }
 
-// char				*ft_realloc(char *old_str, size_t len)
-// {
-// 	char			*new_str;
+char				*ft_realloc(char *old_str, size_t len)
+{
+	char			*new_str;
 
-// 	new_str = (char*)malloc(sizeof(char) * len);
-// 	ft_bzero(new_str, len);
-// 	ft_memcpy(new_str, old_str, ft_strlen(old_str) + 1);
-// 	free(old_str);
-// 	return (new_str);
-// }
+	new_str = (char*)malloc(sizeof(char) * len);
+	ft_bzero(new_str, len);
+	ft_memcpy(new_str, old_str, ft_strlen(old_str) + 1);
+	free(old_str);
+	return (new_str);
+}
 
 	// ZERO OUT BUFFER
 	// ZERO OUT LINE?
@@ -84,16 +84,19 @@ int					get_next_line(const int fd, char **line)
 		return (-1);
 	file = content_detective(fd, &file_list);
 	// printf("->FILE->FD%d VS. FD=%d\n", file->fd, fd);
-	// rtn_bytes = 1;
+	// *line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + BUFF_SIZE + 1));
 	if ((end = ft_strchr(file->buffer, '\n')))
 	{
 		// printf("->FIRST_STORAGE->%s\n", file->buffer);
 		*end = '\0';
-		*line = ft_strdup(file->buffer);
-		// file->buffer = end + 1;
-		file->buffer = ft_strdup(end + 1);
+		*line = (char *)ft_realloc(*line, ft_strlen(file->buffer));
+		*line = ft_strcpy(*line, file->buffer);
+		// *line = ft_strdup(file->buffer);
+		file->buffer = ft_strcpy(file->buffer, (end + 1));
+		// file->buffer = ft_strdup(end + 1);
 		return (1);
 	}
+	// *line = ft_strcpy(*line, file->buffer);
 	while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
@@ -111,15 +114,17 @@ int					get_next_line(const int fd, char **line)
 				bzero(file->buffer, ft_strlen(file->buffer));
 				return (1);
 			}
-			file->buffer = ft_strjoin(file->buffer, buf); // copy to line... extending in the line only
+			// *line = (char *)ft_realloc(*line, 2 * BUFF_SIZE + ft_strlen(*line) + 1);
+			// *line = ft_strcat(file->buffer, buf);
+			file->buffer = ft_strjoin(file->buffer, buf); // copy to line... extending in the line only... need to refactor everything to pull from line
 		}
 		else// if ((end = ft_strchr(buf, '\n')))
 		{
 			// printf("->Newlines in BUF!\n");
 			*end = '\0';
 			*line = ft_strjoin(file->buffer, buf);
-			// file->buffer = end + 1;
-			file->buffer = ft_strdup(end + 1);
+			file->buffer = ft_strcpy(file->buffer, (end + 1));
+			// file->buffer = ft_strdup(end + 1);
 			return (1);
 		}
 	}
