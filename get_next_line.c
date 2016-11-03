@@ -84,15 +84,15 @@ int					get_next_line(const int fd, char **line)
 		return (-1);
 	file = content_detective(fd, &file_list);
 	// printf("->FILE->FD%d VS. FD=%d\n", file->fd, fd);
-	*line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + 1));
-	*line = ft_strcpy(*line, file->buffer);
-	if ((end = ft_strchr(*line, '\n')))
+	// *line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + 1));
+	// *line = ft_strcpy(*line, file->buffer);
+	if ((end = ft_strchr(file->buffer, '\n')))
 	{
 		// printf("->FIRST_STORAGE->%s\n", file->buffer);
 		*end = '\0';
 		// *line = (char *)ft_realloc(*line, ft_strlen(file->buffer));
 		// *line = ft_strcpy(*line, file->buffer);
-		// *line = ft_strdup(file->buffer);
+		*line = ft_strdup(file->buffer);
 		file->buffer = ft_strcpy(file->buffer, (end + 1));
 		// file->buffer = ft_strdup(end + 1);
 		return (1);
@@ -108,7 +108,7 @@ int					get_next_line(const int fd, char **line)
 		// printf("->BUF         ->%s$\n", buf);
 		// printf("->LOOP_STORAGE->%s$\n", file->buffer);
 		// printf("->*line       ->%s$\n\n", *line);
-		// UNDO TO HERE
+		// UNDO TO HERE!!!!!!
 		if (!(end = ft_strchr(buf, '\n')))
 		{
 			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
@@ -118,12 +118,14 @@ int					get_next_line(const int fd, char **line)
 				// printf("->BUF->%s\n", buf);
 				// *line = ft_strcat(*line, buf);
 				*line = ft_strjoin(file->buffer, buf);
-				bzero(file->buffer, ft_strlen(file->buffer));
+				ft_bzero(file->buffer, ft_strlen(file->buffer));
 				return (1);
 			}
 			// *line = (char *)ft_realloc(*line, 2 * BUFF_SIZE + ft_strlen(*line) + 1);
 			// *line = ft_strcat(file->buffer, buf);
-			file->buffer = ft_strjoin(file->buffer, buf); // copy to line... extending in the line only... need to refactor everything to pull from line
+			file->buffer = (char *)ft_realloc(file->buffer, ft_strlen(file->buffer) + BUFF_SIZE + 1);
+			file->buffer = ft_strcat(file->buffer, buf);
+			// file->buffer = ft_strjoin(file->buffer, buf); // copy to line... extending in the line only... need to refactor everything to pull from line
 		}
 		else// if ((end = ft_strchr(buf, '\n')))
 		{
@@ -137,11 +139,11 @@ int					get_next_line(const int fd, char **line)
 	if (ft_strlen(file->buffer) && rtn_bytes != -1)
 	{
 		// printf("->FINAL_STORAGE->%s\n", file->buffer);
-		free(*line);
-		*line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + 1));
-		*line = ft_strcpy(*line, file->buffer);
-		// *line = ft_strdup(file->buffer);
-		bzero(file->buffer, ft_strlen(file->buffer)); // can replace with a function that clears the structs
+		// free(*line);
+		// *line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + 1));
+		// *line = ft_strcpy(*line, file->buffer);
+		*line = ft_strdup(file->buffer);
+		ft_bzero(file->buffer, ft_strlen(file->buffer)); // can replace with a function that clears the structs
 		return (1);
 	}
 	return (rtn_bytes);
