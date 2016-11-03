@@ -45,25 +45,33 @@ char				*ft_realloc(char *old_str, size_t len)
 	return (new_str);
 }
 
-// void	ft_list_clear(t_list **begin_list, int fd)
-// {
-// 	t_list *tmp;
-// 	t_list *list;
+void	memory_detective(t_list **begin_list, int fd)
+{
+	printf("WAHOO0000000000!!!!!!\n");
+	t_list *tmp;
+	t_list *list;
 
-// 	list = *begin_list;
-// 	if (!list)
-// 		return ;
-// 	while (list)
-// 	{
-// 		if (((t_overflow *)(list->content))->fd == fd)
-// 		{
-// 			tmp = list->next;
-// 			free(list);
-// 			list = tmp;	
-// 		}
-// 	}
-// 	*begin_list = 0;
-// }
+	list = *begin_list;
+	if (!list)
+		return ;
+	while (list)
+	{
+		printf("#1->fd->%d VS. ->input_fd->%d\n", ((t_overflow *)(list->content))->fd, fd);
+		if (((t_overflow *)(list->content))->fd == fd)
+		{
+			printf("#2->fd->%d VS. ->input_fd->%d\n", ((t_overflow *)(list->content))->fd, fd);
+			tmp = list->next;
+			printf("#3\n");
+			free(((t_overflow *)(list->content))->buffer);
+			printf("#4\n");
+			free(list);
+			printf("#5\n");
+			list = tmp;	
+		}
+		list = list->next;
+	}
+	// *begin_list = 0;
+}
 
 int					get_next_line(const int fd, char **line)
 {
@@ -114,6 +122,11 @@ int					get_next_line(const int fd, char **line)
 		ft_bzero(file->buffer, ft_strlen(file->buffer)); // can replace with a function that clears the structs
 		return (1);
 	}
+	// if (rtn_bytes == 0)
+	// {
+	// 	ft_list_clear(&file_list, fd);
+	// 	file_list = 0;
+	// }
 	return (rtn_bytes);
 }
 
