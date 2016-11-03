@@ -45,13 +45,6 @@ char				*ft_realloc(char *old_str, size_t len)
 	return (new_str);
 }
 
-	// ZERO OUT BUFFER
-	// ZERO OUT LINE?
-	// concat onto line if no newline?
-	// use realloc?
-	// NEED TO FREE LISTS
-	// NOT HANDLING LAST LINES CONSISTENTLY
-
 // void	ft_list_clear(t_list **begin_list, int fd)
 // {
 // 	t_list *tmp;
@@ -83,18 +76,11 @@ int					get_next_line(const int fd, char **line)
 	if (!line || !fd)
 		return (-1);
 	file = content_detective(fd, &file_list);
-	// printf("->FILE->FD%d VS. FD=%d\n", file->fd, fd);
-	// *line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + 1));
-	// *line = ft_strcpy(*line, file->buffer);
 	if ((end = ft_strchr(file->buffer, '\n')))
 	{
-		// printf("->FIRST_STORAGE->%s\n", file->buffer);
 		*end = '\0';
-		// *line = (char *)ft_realloc(*line, ft_strlen(file->buffer));
-		// *line = ft_strcpy(*line, file->buffer);
 		*line = ft_strdup(file->buffer);
 		file->buffer = ft_strcpy(file->buffer, (end + 1));
-		// file->buffer = ft_strdup(end + 1);
 		return (1);
 	}
 	while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
@@ -103,45 +89,27 @@ int					get_next_line(const int fd, char **line)
 			buf[rtn_bytes] = '\0';
 		else
 			buf[BUFF_SIZE] = '\0';
-		// printf("->RTN_BYTES->%zd\n", rtn_bytes);
-		// *line = (char *)ft_realloc(*line, BUFF_SIZE + ft_strlen(*line));
-		// printf("->BUF         ->%s$\n", buf);
-		// printf("->LOOP_STORAGE->%s$\n", file->buffer);
-		// printf("->*line       ->%s$\n\n", *line);
-		// UNDO TO HERE!!!!!!
 		if (!(end = ft_strchr(buf, '\n')))
 		{
 			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
 			{
-				// printf("->LOOP_STORAGE->%s\n", file->buffer);
-				// printf("->*line->%s\n", *line);
-				// printf("->BUF->%s\n", buf);
-				// *line = ft_strcat(*line, buf);
 				*line = ft_strjoin(file->buffer, buf);
 				ft_bzero(file->buffer, ft_strlen(file->buffer));
 				return (1);
 			}
-			// *line = (char *)ft_realloc(*line, 2 * BUFF_SIZE + ft_strlen(*line) + 1);
-			// *line = ft_strcat(file->buffer, buf);
 			file->buffer = (char *)ft_realloc(file->buffer, ft_strlen(file->buffer) + BUFF_SIZE + 1);
 			file->buffer = ft_strcat(file->buffer, buf);
-			// file->buffer = ft_strjoin(file->buffer, buf); // copy to line... extending in the line only... need to refactor everything to pull from line
 		}
 		else// if ((end = ft_strchr(buf, '\n')))
 		{
 			*end = '\0';
 			*line = ft_strjoin(file->buffer, buf);
 			file->buffer = ft_strcpy(file->buffer, (end + 1));
-			// file->buffer = ft_strdup(end + 1);
 			return (1);
 		}
 	}
 	if (ft_strlen(file->buffer) && rtn_bytes != -1)
 	{
-		// printf("->FINAL_STORAGE->%s\n", file->buffer);
-		// free(*line);
-		// *line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + 1));
-		// *line = ft_strcpy(*line, file->buffer);
 		*line = ft_strdup(file->buffer);
 		ft_bzero(file->buffer, ft_strlen(file->buffer)); // can replace with a function that clears the structs
 		return (1);
