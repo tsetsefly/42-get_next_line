@@ -84,20 +84,19 @@ int					get_next_line(const int fd, char **line)
 		return (-1);
 	file = content_detective(fd, &file_list);
 	// printf("->FILE->FD%d VS. FD=%d\n", file->fd, fd);
-	*line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + BUFF_SIZE + 1));
-	if ((end = ft_strchr(file->buffer, '\n')))
+	*line = (char *)malloc(sizeof(char) * (ft_strlen(file->buffer) + 1));
+	*line = ft_strcpy(*line, file->buffer);
+	if ((end = ft_strchr(*line, '\n')))
 	{
 		// printf("->FIRST_STORAGE->%s\n", file->buffer);
 		*end = '\0';
 		// *line = (char *)ft_realloc(*line, ft_strlen(file->buffer));
-		*line = ft_strcpy(*line, file->buffer);
+		// *line = ft_strcpy(*line, file->buffer);
 		// *line = ft_strdup(file->buffer);
 		file->buffer = ft_strcpy(file->buffer, (end + 1));
 		// file->buffer = ft_strdup(end + 1);
 		return (1);
 	}
-	// *line = ft_strcpy(*line, file->buffer);
-
 	while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
@@ -105,12 +104,17 @@ int					get_next_line(const int fd, char **line)
 		else
 			buf[BUFF_SIZE] = '\0';
 		// printf("->RTN_BYTES->%zd\n", rtn_bytes);
-		// printf("->LOOP_STORAGE->%s\n", file->buffer);
-		// printf("->FIRST_READ_BUF->%s\n", buf);
+		// *line = (char *)ft_realloc(*line, BUFF_SIZE + ft_strlen(*line));
+		// printf("->BUF         ->%s$\n", buf);
+		// printf("->LOOP_STORAGE->%s$\n", file->buffer);
+		// printf("->*line       ->%s$\n\n", *line);
+		// UNDO TO HERE
 		if (!(end = ft_strchr(buf, '\n')))
 		{
 			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
 			{
+				// printf("->LOOP_STORAGE->%s\n", file->buffer);
+				// printf("->*line->%s\n", *line);
 				// printf("->BUF->%s\n", buf);
 				// *line = ft_strcat(*line, buf);
 				*line = ft_strjoin(file->buffer, buf);
