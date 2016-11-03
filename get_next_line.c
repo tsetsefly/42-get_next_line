@@ -72,7 +72,7 @@ int					get_next_line(const int fd, char **line)
 	ssize_t			rtn_bytes;
 	char			*end;
 
-	if (!line || !fd)
+	if (!line)
 		return (-1);
 	file = content_detective(fd, &file_list);
 	if ((end = ft_strchr(file->buffer, '\n')))
@@ -117,9 +117,6 @@ int					get_next_line(const int fd, char **line)
 
 // if (ft_strlen(buf) != (size_t)rtn_bytes) 
 // 	return (-1);
-// if (!(*line = (char *)malloc(sizeof(char) * (BUFF_SIZE))))
-// 	return (-1);
-// *line = ft_memset(*line, 0, BUFF_SIZE);
 
 /*
 	*realloc = changes the size of allocation of a ptr to size, if not enough room will malloc again and 
