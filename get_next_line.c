@@ -45,11 +45,11 @@ char				*ft_realloc(char *old_str, size_t len)
 	return (new_str);
 }
 
-void	memory_detective(t_list **begin_list, int fd)
+void				memory_detective(t_list **begin_list, int fd)
 {
 	printf("WAHOO0000000000!!!!!!\n");
-	t_list *tmp;
-	t_list *list;
+	t_list			*tmp;
+	t_list			*list;
 
 	list = *begin_list;
 	if (!list)
@@ -93,10 +93,7 @@ int					get_next_line(const int fd, char **line)
 	}
 	while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
-			buf[rtn_bytes] = '\0';
-		else
-			buf[BUFF_SIZE] = '\0';
+		buf[rtn_bytes] = '\0';
 		if (!(end = ft_strchr(buf, '\n')))
 		{
 			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
@@ -108,7 +105,7 @@ int					get_next_line(const int fd, char **line)
 			file->buffer = (char *)ft_realloc(file->buffer, ft_strlen(file->buffer) + BUFF_SIZE + 1);
 			file->buffer = ft_strcat(file->buffer, buf);
 		}
-		else// if ((end = ft_strchr(buf, '\n')))
+		else
 		{
 			*end = '\0';
 			*line = ft_strjoin(file->buffer, buf);
@@ -119,7 +116,7 @@ int					get_next_line(const int fd, char **line)
 	if (ft_strlen(file->buffer) && rtn_bytes != -1)
 	{
 		*line = ft_strdup(file->buffer);
-		ft_bzero(file->buffer, ft_strlen(file->buffer)); // can replace with a function that clears the structs
+		ft_bzero(file->buffer, ft_strlen(file->buffer));
 		return (1);
 	}
 	// if (rtn_bytes == 0)
