@@ -73,7 +73,8 @@ FILENAMES	=		ft_atoi.c			\
 					ft_delimwc.c		\
 					ft_numdigits.c		\
 					ft_swapints.c		\
-					ft_foreachint.c
+					ft_foreachint.c		\
+					ft_realloc.c
 
 CC			=		gcc
 CFLAGS		=		-c -Wall -Wextra -Werror

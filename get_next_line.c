@@ -34,17 +34,6 @@ static t_overflow	*content_detective(const int fd, t_list **file_list_ptr)
 	return ((*file_list_ptr)->content);
 }
 
-char				*ft_realloc(char *old_str, size_t len)
-{
-	char			*new_str;
-
-	new_str = (char*)malloc(sizeof(char) * len);
-	ft_bzero(new_str, len);
-	ft_memcpy(new_str, old_str, ft_strlen(old_str) + 1);
-	free(old_str);
-	return (new_str);
-}
-
 static void			memory_detective(t_list **begin_list, int fd)
 {
 	t_list			*t;
@@ -116,7 +105,6 @@ int					get_next_line(const int fd, char **line)
 		file->buffer = ft_strcpy(file->buffer, (end + 1));
 		return (1);
 	}
-	// rtn_bytes = 0;
 	rtn_bytes = file_detective(&file, fd, &line);
 	if (ft_strlen(file->buffer) && rtn_bytes == 0)
 	{

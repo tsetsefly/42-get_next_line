@@ -87,5 +87,6 @@ int				ft_numdigits(long n);
 size_t			ft_delimwc(char *str, char c);
 void			ft_swap(int *a, int *b);
 void			ft_foreachint(int *tab, int length, void(*f)(int));
+char			*ft_realloc(char *old_str, size_t len);
 
 #endif
