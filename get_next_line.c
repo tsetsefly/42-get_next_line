@@ -64,10 +64,18 @@ static void			memory_detective(t_list **begin_list, int fd)
 	}
 }
 
-static ssize_t		file_detective(t_overflow **file, const int fd, char ***line, ssize_t rtn_bytes)
+static ssize_t		norm_sucks(t_overflow **file, char *buf, char ***line)
+{
+	*(*line) = ft_strjoin((*file)->buffer, buf);
+	ft_bzero((*file)->buffer, ft_strlen((*file)->buffer));
+	return (1);
+}
+
+static ssize_t		file_detective(t_overflow **file, const int fd, char ***line)
 {
 	char			*end;
 	char			buf[BUFF_SIZE + 1];
+	ssize_t			rtn_bytes;
 
 	while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
 	{
@@ -75,12 +83,9 @@ static ssize_t		file_detective(t_overflow **file, const int fd, char ***line, ss
 		if (!(end = ft_strchr(buf, '\n')))
 		{
 			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
-			{
-				*(*line) = ft_strjoin((*file)->buffer, buf);
-				ft_bzero((*file)->buffer, ft_strlen((*file)->buffer));
-				return (1);
-			}
-			(*file)->buffer = (char *)ft_realloc((*file)->buffer, ft_strlen((*file)->buffer) + BUFF_SIZE + 1);
+				return (norm_sucks(&(*file), buf, &(*line)));
+			(*file)->buffer = (char *)ft_realloc((*file)->buffer,
+				ft_strlen((*file)->buffer) + BUFF_SIZE + 1);
 			(*file)->buffer = ft_strcat((*file)->buffer, buf);
 		}
 		else
@@ -93,8 +98,6 @@ static ssize_t		file_detective(t_overflow **file, const int fd, char ***line, ss
 	}
 	return (rtn_bytes);
 }
-
-// STOP UNDOING HERE!!!!
 
 int					get_next_line(const int fd, char **line)
 {
@@ -113,10 +116,8 @@ int					get_next_line(const int fd, char **line)
 		file->buffer = ft_strcpy(file->buffer, (end + 1));
 		return (1);
 	}
-	rtn_bytes = 0;
-	// if ((rtn_bytes = file_detective(&file, fd, &line, rtn_bytes)) == 1)
-	// 	return (rtn_bytes);
-	rtn_bytes = file_detective(&file, fd, &line, rtn_bytes);
+	// rtn_bytes = 0;
+	rtn_bytes = file_detective(&file, fd, &line);
 	if (ft_strlen(file->buffer) && rtn_bytes == 0)
 	{
 		*line = ft_strdup(file->buffer);
