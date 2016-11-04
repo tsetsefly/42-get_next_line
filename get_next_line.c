@@ -45,9 +45,9 @@ char				*ft_realloc(char *old_str, size_t len)
 	return (new_str);
 }
 
-void				memory_detective(t_list **begin_list, int fd)
+static void			memory_detective(t_list **begin_list, int fd)
 {
-	t_list *t;
+	t_list			*t;
  
 	if (*begin_list)
 	{
@@ -64,22 +64,17 @@ void				memory_detective(t_list **begin_list, int fd)
 	}
 }
 
-int					get_next_line(const int fd, char **line)
+static int 			file_detective(t_overflow **file, const int fd, char ***line)
 {
-	static t_list	*file_list;
-	t_overflow		*file;
+	char			*end;
 	char			buf[BUFF_SIZE + 1];
 	ssize_t			rtn_bytes;
-	char			*end;
 
-	if (!line)
-		return (-1);
-	file = content_detective(fd, &file_list);
-	if ((end = ft_strchr(file->buffer, '\n')))
+	if ((end = ft_strchr((*file)->buffer, '\n')))
 	{
 		*end = '\0';
-		*line = ft_strdup(file->buffer);
-		file->buffer = ft_strcpy(file->buffer, (end + 1));
+		*(*line) = ft_strdup((*file)->buffer);
+		(*file)->buffer = ft_strcpy((*file)->buffer, (end + 1));
 		return (1);
 	}
 	while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
@@ -89,30 +84,76 @@ int					get_next_line(const int fd, char **line)
 		{
 			if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
 			{
-				*line = ft_strjoin(file->buffer, buf);
-				ft_bzero(file->buffer, ft_strlen(file->buffer));
+				*(*line) = ft_strjoin((*file)->buffer, buf);
+				ft_bzero((*file)->buffer, ft_strlen((*file)->buffer));
 				return (1);
 			}
-			file->buffer = (char *)ft_realloc(file->buffer, ft_strlen(file->buffer) + BUFF_SIZE + 1);
-			file->buffer = ft_strcat(file->buffer, buf);
+			(*file)->buffer = (char *)ft_realloc((*file)->buffer, ft_strlen((*file)->buffer) + BUFF_SIZE + 1);
+			(*file)->buffer = ft_strcat((*file)->buffer, buf);
 		}
 		else
 		{
 			*end = '\0';
-			*line = ft_strjoin(file->buffer, buf);
-			file->buffer = ft_strcpy(file->buffer, (end + 1));
+			*(*line) = ft_strjoin((*file)->buffer, buf);
+			(*file)->buffer = ft_strcpy((*file)->buffer, (end + 1));
 			return (1);
 		}
 	}
-	if (ft_strlen(file->buffer) && rtn_bytes != -1)
+	return ((int)rtn_bytes);
+}
+
+int					get_next_line(const int fd, char **line)
+{
+	static t_list	*file_list;
+	t_overflow		*file;
+	// char			buf[BUFF_SIZE + 1];
+	// ssize_t			rtn_bytes;
+	int 			flag;
+	// char			*end;
+
+	if (!line)
+		return (-1);
+	file = content_detective(fd, &file_list);
+	if ((flag = file_detective(&file, fd, &line)) == 1)
+		return (flag);
+	// if ((end = ft_strchr(file->buffer, '\n')))
+	// {
+	// 	*end = '\0';
+	// 	*line = ft_strdup(file->buffer);
+	// 	file->buffer = ft_strcpy(file->buffer, (end + 1));
+	// 	return (1);
+	// }
+	// while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
+	// {
+	// 	buf[rtn_bytes] = '\0';
+	// 	if (!(end = ft_strchr(buf, '\n')))
+	// 	{
+	// 		if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
+	// 		{
+	// 			*line = ft_strjoin(file->buffer, buf);
+	// 			ft_bzero(file->buffer, ft_strlen(file->buffer));
+	// 			return (1);
+	// 		}
+	// 		file->buffer = (char *)ft_realloc(file->buffer, ft_strlen(file->buffer) + BUFF_SIZE + 1);
+	// 		file->buffer = ft_strcat(file->buffer, buf);
+	// 	}
+	// 	else
+	// 	{
+	// 		*end = '\0';
+	// 		*line = ft_strjoin(file->buffer, buf);
+	// 		file->buffer = ft_strcpy(file->buffer, (end + 1));
+	// 		return (1);
+	// 	}
+	// }
+	if (ft_strlen(file->buffer) && flag != -1)
 	{
 		*line = ft_strdup(file->buffer);
 		ft_bzero(file->buffer, ft_strlen(file->buffer));
 		return (1);
 	}
-	if (rtn_bytes == 0)
+	if (flag == 0)
 		memory_detective(&file_list, fd);
-	return (rtn_bytes);
+	return (flag);
 }
 
 // if (ft_strlen(buf) != (size_t)rtn_bytes) 
