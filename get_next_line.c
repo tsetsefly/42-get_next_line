@@ -64,16 +64,22 @@ static void			memory_detective(t_list **begin_list, int fd)
 	}
 }
 
-static int 			file_detective(t_overflow **file, const int fd, char ***line)
+// static ssize_t		storage_detective()
+// {
+
+// }
+
+static ssize_t		file_detective(t_overflow **file, const int fd, char ***line, ssize_t rtn_bytes)
 {
 	char			*end;
 	char			buf[BUFF_SIZE + 1];
-	ssize_t			rtn_bytes;
 
+	ft_bzero(buf, BUFF_SIZE + 1);
 	if ((end = ft_strchr((*file)->buffer, '\n')))
 	{
 		*end = '\0';
-		*(*line) = ft_strdup((*file)->buffer);
+		*(*line) = ft_strjoin((*file)->buffer, buf);
+		// *(*line) = ft_strdup((*file)->buffer);
 		(*file)->buffer = ft_strcpy((*file)->buffer, (end + 1));
 		return (1);
 	}
@@ -99,7 +105,7 @@ static int 			file_detective(t_overflow **file, const int fd, char ***line)
 			return (1);
 		}
 	}
-	return ((int)rtn_bytes);
+	return (rtn_bytes);
 }
 
 int					get_next_line(const int fd, char **line)
@@ -107,15 +113,14 @@ int					get_next_line(const int fd, char **line)
 	static t_list	*file_list;
 	t_overflow		*file;
 	// char			buf[BUFF_SIZE + 1];
-	// ssize_t			rtn_bytes;
-	int 			flag;
+	ssize_t			rtn_bytes;
 	// char			*end;
-
+	rtn_bytes = 0;
 	if (!line)
 		return (-1);
 	file = content_detective(fd, &file_list);
-	if ((flag = file_detective(&file, fd, &line)) == 1)
-		return (flag);
+	if ((rtn_bytes = file_detective(&file, fd, &line, rtn_bytes)) == 1)
+		return (rtn_bytes);
 	// if ((end = ft_strchr(file->buffer, '\n')))
 	// {
 	// 	*end = '\0';
@@ -145,15 +150,15 @@ int					get_next_line(const int fd, char **line)
 	// 		return (1);
 	// 	}
 	// }
-	if (ft_strlen(file->buffer) && flag != -1)
+	if (ft_strlen(file->buffer) && rtn_bytes != -1)
 	{
 		*line = ft_strdup(file->buffer);
 		ft_bzero(file->buffer, ft_strlen(file->buffer));
 		return (1);
 	}
-	if (flag == 0)
+	if (rtn_bytes == 0)
 		memory_detective(&file_list, fd);
-	return (flag);
+	return (rtn_bytes);
 }
 
 // if (ft_strlen(buf) != (size_t)rtn_bytes) 
