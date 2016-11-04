@@ -64,25 +64,11 @@ static void			memory_detective(t_list **begin_list, int fd)
 	}
 }
 
-// static ssize_t		storage_detective()
-// {
-
-// }
-
 static ssize_t		file_detective(t_overflow **file, const int fd, char ***line, ssize_t rtn_bytes)
 {
 	char			*end;
 	char			buf[BUFF_SIZE + 1];
 
-	ft_bzero(buf, BUFF_SIZE + 1);
-	if ((end = ft_strchr((*file)->buffer, '\n')))
-	{
-		*end = '\0';
-		*(*line) = ft_strjoin((*file)->buffer, buf);
-		// *(*line) = ft_strdup((*file)->buffer);
-		(*file)->buffer = ft_strcpy((*file)->buffer, (end + 1));
-		return (1);
-	}
 	while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[rtn_bytes] = '\0';
@@ -108,56 +94,36 @@ static ssize_t		file_detective(t_overflow **file, const int fd, char ***line, ss
 	return (rtn_bytes);
 }
 
+// STOP UNDOING HERE!!!!
+
 int					get_next_line(const int fd, char **line)
 {
 	static t_list	*file_list;
 	t_overflow		*file;
-	// char			buf[BUFF_SIZE + 1];
 	ssize_t			rtn_bytes;
-	// char			*end;
-	rtn_bytes = 0;
+	char			*end;
+
 	if (!line)
 		return (-1);
 	file = content_detective(fd, &file_list);
-	if ((rtn_bytes = file_detective(&file, fd, &line, rtn_bytes)) == 1)
-		return (rtn_bytes);
-	// if ((end = ft_strchr(file->buffer, '\n')))
-	// {
-	// 	*end = '\0';
-	// 	*line = ft_strdup(file->buffer);
-	// 	file->buffer = ft_strcpy(file->buffer, (end + 1));
-	// 	return (1);
-	// }
-	// while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
-	// {
-	// 	buf[rtn_bytes] = '\0';
-	// 	if (!(end = ft_strchr(buf, '\n')))
-	// 	{
-	// 		if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
-	// 		{
-	// 			*line = ft_strjoin(file->buffer, buf);
-	// 			ft_bzero(file->buffer, ft_strlen(file->buffer));
-	// 			return (1);
-	// 		}
-	// 		file->buffer = (char *)ft_realloc(file->buffer, ft_strlen(file->buffer) + BUFF_SIZE + 1);
-	// 		file->buffer = ft_strcat(file->buffer, buf);
-	// 	}
-	// 	else
-	// 	{
-	// 		*end = '\0';
-	// 		*line = ft_strjoin(file->buffer, buf);
-	// 		file->buffer = ft_strcpy(file->buffer, (end + 1));
-	// 		return (1);
-	// 	}
-	// }
-	if (ft_strlen(file->buffer) && rtn_bytes != -1)
+	if ((end = ft_strchr(file->buffer, '\n')))
+	{
+		*end = '\0';
+		*line = ft_strdup(file->buffer);
+		file->buffer = ft_strcpy(file->buffer, (end + 1));
+		return (1);
+	}
+	rtn_bytes = 0;
+	// if ((rtn_bytes = file_detective(&file, fd, &line, rtn_bytes)) == 1)
+	// 	return (rtn_bytes);
+	rtn_bytes = file_detective(&file, fd, &line, rtn_bytes);
+	if (ft_strlen(file->buffer) && rtn_bytes == 0)
 	{
 		*line = ft_strdup(file->buffer);
 		ft_bzero(file->buffer, ft_strlen(file->buffer));
 		return (1);
 	}
-	if (rtn_bytes == 0)
-		memory_detective(&file_list, fd);
+	(rtn_bytes == 0) ? (memory_detective(&file_list, fd)) : (rtn_bytes);
 	return (rtn_bytes);
 }
 
