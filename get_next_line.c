@@ -60,7 +60,8 @@ static ssize_t		norm_sucks(t_overflow **file, char *buf, char ***line)
 	return (1);
 }
 
-static ssize_t		file_detective(t_overflow **file, const int fd, char ***line)
+static ssize_t		file_detective(t_overflow **file, const int fd,
+	char ***line)
 {
 	char			*end;
 	char			buf[BUFF_SIZE + 1];
