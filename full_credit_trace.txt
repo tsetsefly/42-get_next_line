@@ -1,0 +1,292 @@
+= Host-specific information ====================================================
+$> hostname; uname -msr
+e1z3r2p21.42.us.org
+Darwin 15.6.0 x86_64
+$> date
+Mon Nov  7 17:23:12 PST 2016
+$> gcc --version
+Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/c++/4.2.1
+Apple LLVM version 7.3.0 (clang-703.0.31)
+Target: x86_64-apple-darwin15.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+$> clang --version
+Apple LLVM version 7.3.0 (clang-703.0.31)
+Target: x86_64-apple-darwin15.6.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+
+= User files collection ========================================================
+Collecting user files from Vogsphere
+Repository URL: intra/2016/activities/get_next_line/dtse
+
+= Git history ==================================================================
+$> git -C /var/folders/jh/y8yd5_kd7yn34wfp2y5h8z1w0000gp/T/tmpapT8cC/user log --pretty='%H - %an, %ad : %s'
+81ba2f4a503c26228524790fc2fb0fc681765316 - tsetsefly, Mon Nov 7 11:55:44 2016 -0800 : changing buff size
+e3711a371afd2f66020dc84acc2e611a1f0166a3 - tsetsefly, Mon Nov 7 11:52:59 2016 -0800 : norm'd
+260de8defe938c4a1ea416a92d829d62f69939e8 - tsetsefly, Mon Nov 7 11:24:05 2016 -0800 : norm'd the .h and the .c
+
+= Collected files ==========================================
+$> ls -lAR /var/folders/jh/y8yd5_kd7yn34wfp2y5h8z1w0000gp/T/tmpapT8cC/user
+total 64
+-rw-r--r--   1 deepthought  deepthought  8196 Nov  7 17:23 .DS_Store
+-rw-r--r--   1 deepthought  deepthought  4096 Nov  7 17:23 ._.DS_Store
+-rw-r--r--   1 deepthought  deepthought  3744 Nov  7 17:23 __GIT_HISTORY
+-rw-r--r--   1 deepthought  deepthought     5 Nov  7 17:23 author
+-rw-r--r--   1 deepthought  deepthought  3413 Nov  7 17:23 get_next_line.c
+-rw-r--r--   1 deepthought  deepthought  1211 Nov  7 17:23 get_next_line.h
+drwxr-xr-x  69 deepthought  deepthought  2346 Nov  7 17:23 libft
+
+/var/folders/jh/y8yd5_kd7yn34wfp2y5h8z1w0000gp/T/tmpapT8cC/user/libft:
+total 536
+-rw-r--r--  1 deepthought  deepthought  2544 Nov  7 17:23 Makefile
+-rw-r--r--  1 deepthought  deepthought     5 Nov  7 17:23 author
+-rw-r--r--  1 deepthought  deepthought  1320 Nov  7 17:23 ft_atoi.c
+-rw-r--r--  1 deepthought  deepthought   973 Nov  7 17:23 ft_bzero.c
+-rw-r--r--  1 deepthought  deepthought  1146 Nov  7 17:23 ft_delimwc.c
+-rw-r--r--  1 deepthought  deepthought  1006 Nov  7 17:23 ft_foreachint.c
+-rw-r--r--  1 deepthought  deepthought  1041 Nov  7 17:23 ft_isalnum.c
+-rw-r--r--  1 deepthought  deepthought  1018 Nov  7 17:23 ft_isalpha.c
+-rw-r--r--  1 deepthought  deepthought   990 Nov  7 17:23 ft_isascii.c
+-rw-r--r--  1 deepthought  deepthought   990 Nov  7 17:23 ft_isdigit.c
+-rw-r--r--  1 deepthought  deepthought   991 Nov  7 17:23 ft_isprint.c
+-rw-r--r--  1 deepthought  deepthought  1380 Nov  7 17:23 ft_itoa.c
+-rw-r--r--  1 deepthought  deepthought   997 Nov  7 17:23 ft_lstadd.c
+-rw-r--r--  1 deepthought  deepthought  1079 Nov  7 17:23 ft_lstdel.c
+-rw-r--r--  1 deepthought  deepthought  1055 Nov  7 17:23 ft_lstdelone.c
+-rw-r--r--  1 deepthought  deepthought  1034 Nov  7 17:23 ft_lstiter.c
+-rw-r--r--  1 deepthought  deepthought  1339 Nov  7 17:23 ft_lstmap.c
+-rw-r--r--  1 deepthought  deepthought  1316 Nov  7 17:23 ft_lstnew.c
+-rw-r--r--  1 deepthought  deepthought  1040 Nov  7 17:23 ft_memalloc.c
+-rw-r--r--  1 deepthought  deepthought  1252 Nov  7 17:23 ft_memccpy.c
+-rw-r--r--  1 deepthought  deepthought  1174 Nov  7 17:23 ft_memchr.c
+-rw-r--r--  1 deepthought  deepthought  1188 Nov  7 17:23 ft_memcmp.c
+-rw-r--r--  1 deepthought  deepthought  1161 Nov  7 17:23 ft_memcpy.c
+-rw-r--r--  1 deepthought  deepthought  1007 Nov  7 17:23 ft_memdel.c
+-rw-r--r--  1 deepthought  deepthought  1240 Nov  7 17:23 ft_memmove.c
+-rw-r--r--  1 deepthought  deepthought  1078 Nov  7 17:23 ft_memset.c
+-rw-r--r--  1 deepthought  deepthought  1009 Nov  7 17:23 ft_numdigits.c
+-rw-r--r--  1 deepthought  deepthought   958 Nov  7 17:23 ft_putchar.c
+-rw-r--r--  1 deepthought  deepthought   970 Nov  7 17:23 ft_putchar_fd.c
+-rw-r--r--  1 deepthought  deepthought   981 Nov  7 17:23 ft_putendl.c
+-rw-r--r--  1 deepthought  deepthought  1051 Nov  7 17:23 ft_putendl_fd.c
+-rw-r--r--  1 deepthought  deepthought  1079 Nov  7 17:23 ft_putnbr.c
+-rw-r--r--  1 deepthought  deepthought  1111 Nov  7 17:23 ft_putnbr_fd.c
+-rw-r--r--  1 deepthought  deepthought  1014 Nov  7 17:23 ft_putstr.c
+-rw-r--r--  1 deepthought  deepthought  1024 Nov  7 17:23 ft_putstr_fd.c
+-rw-r--r--  1 deepthought  deepthought  1138 Nov  7 17:23 ft_realloc.c
+-rw-r--r--  1 deepthought  deepthought  1118 Nov  7 17:23 ft_strcat.c
+-rw-r--r--  1 deepthought  deepthought  1095 Nov  7 17:23 ft_strchr.c
+-rw-r--r--  1 deepthought  deepthought   988 Nov  7 17:23 ft_strclr.c
+-rw-r--r--  1 deepthought  deepthought  1125 Nov  7 17:23 ft_strcmp.c
+-rw-r--r--  1 deepthought  deepthought  1060 Nov  7 17:23 ft_strcpy.c
+-rw-r--r--  1 deepthought  deepthought  1007 Nov  7 17:23 ft_strdel.c
+-rw-r--r--  1 deepthought  deepthought  1103 Nov  7 17:23 ft_strdup.c
+-rw-r--r--  1 deepthought  deepthought  1028 Nov  7 17:23 ft_strequ.c
+-rw-r--r--  1 deepthought  deepthought  1008 Nov  7 17:23 ft_striter.c
+-rw-r--r--  1 deepthought  deepthought  1037 Nov  7 17:23 ft_striteri.c
+-rw-r--r--  1 deepthought  deepthought  1183 Nov  7 17:23 ft_strjoin.c
+-rw-r--r--  1 deepthought  deepthought  1326 Nov  7 17:23 ft_strlcat.c
+-rw-r--r--  1 deepthought  deepthought  1007 Nov  7 17:23 ft_strlen.c
+-rw-r--r--  1 deepthought  deepthought  1130 Nov  7 17:23 ft_strmap.c
+-rw-r--r--  1 deepthought  deepthought  1161 Nov  7 17:23 ft_strmapi.c
+-rw-r--r--  1 deepthought  deepthought  1181 Nov  7 17:23 ft_strncat.c
+-rw-r--r--  1 deepthought  deepthought  1151 Nov  7 17:23 ft_strncmp.c
+-rw-r--r--  1 deepthought  deepthought  1142 Nov  7 17:23 ft_strncpy.c
+-rw-r--r--  1 deepthought  deepthought  1066 Nov  7 17:23 ft_strnequ.c
+-rw-r--r--  1 deepthought  deepthought  1074 Nov  7 17:23 ft_strnew.c
+-rw-r--r--  1 deepthought  deepthought  1324 Nov  7 17:23 ft_strnstr.c
+-rw-r--r--  1 deepthought  deepthought  1081 Nov  7 17:23 ft_strrchr.c
+-rw-r--r--  1 deepthought  deepthought  1199 Nov  7 17:23 ft_strrev.c
+-rw-r--r--  1 deepthought  deepthought  2158 Nov  7 17:23 ft_strsplit.c
+-rw-r--r--  1 deepthought  deepthought  1204 Nov  7 17:23 ft_strstr.c
+-rw-r--r--  1 deepthought  deepthought  1142 Nov  7 17:23 ft_strsub.c
+-rw-r--r--  1 deepthought  deepthought  1560 Nov  7 17:23 ft_strtrim.c
+-rw-r--r--  1 deepthought  deepthought   972 Nov  7 17:23 ft_swapints.c
+-rw-r--r--  1 deepthought  deepthought   995 Nov  7 17:23 ft_tolower.c
+-rw-r--r--  1 deepthought  deepthought   996 Nov  7 17:23 ft_toupper.c
+-rw-r--r--  1 deepthought  deepthought  3939 Nov  7 17:23 libft.h
+
+= test_error ===================================================================
+
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_errors.o -c test_errors.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_errors.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_errors: [ok]
+
+1/1 correct tests
+Grade: 10
+
+= test_basic ===================================================================
+
+Define found
+
+BUFF_SIZE changed to 1
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_simple.o -c test_simple.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_fds.o -c test_fds.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_simple.o test_fds.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_simple_1: [ok]
+test_fds_1: [ok]
+
+
+BUFF_SIZE changed to 4
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_simple.o -c test_simple.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_fds.o -c test_fds.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_simple.o test_fds.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_simple_4: [ok]
+test_fds_4: [ok]
+
+
+BUFF_SIZE changed to 100
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_simple.o -c test_simple.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_fds.o -c test_fds.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_simple.o test_fds.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_simple_100: [ok]
+test_fds_100: [ok]
+
+
+BUFF_SIZE changed to 2056
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_simple.o -c test_simple.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_fds.o -c test_fds.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_simple.o test_fds.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_simple_2056: [ok]
+test_fds_2056: [ok]
+
+8/8 correct tests
+Grade: 40
+
+= test_medium ==================================================================
+
+Define found
+
+BUFF_SIZE changed to 100
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_medium.o -c test_medium.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_medium.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_medium_100: [ok]
+
+
+BUFF_SIZE changed to 2048
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_medium.o -c test_medium.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_medium.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_medium_2048: [ok]
+
+
+BUFF_SIZE changed to 4096
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_medium.o -c test_medium.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_medium.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_medium_4096: [ok]
+
+3/3 correct tests
+Grade: 40
+
+= test_hard ====================================================================
+
+Define found
+
+BUFF_SIZE changed to 50000
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_hard.o -c test_hard.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_hard.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_hard_50000: [ok]
+
+1/1 correct tests
+Grade: 10
+
+= test_bonus_static ============================================================
+Define found
+OK 1 static found
+1/1 correct tests
+Grade: 10
+
+= test_bonus_fd ================================================================
+
+Define found
+
+BUFF_SIZE changed to 1
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_multiple_fd.o -c test_multiple_fd.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_multiple_fd.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_multiplefd_1: [ok]
+
+
+BUFF_SIZE changed to 4
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_multiple_fd.o -c test_multiple_fd.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_multiple_fd.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_multiplefd_4: [ok]
+
+
+BUFF_SIZE changed to 100
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_multiple_fd.o -c test_multiple_fd.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_multiple_fd.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_multiplefd_100: [ok]
+
+
+BUFF_SIZE changed to 2056
+/bin/rm -f
+/bin/rm -f test_gnl
+clang -I libft/includes -I libft/ -o main.o -c main.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o test_multiple_fd.o -c test_multiple_fd.c -Wall -Wextra -Werror -g3
+clang -I libft/includes -I libft/ -o get_next_line.o -c get_next_line.c -Wall -Wextra -Werror -g3
+clang -o test_gnl main.o test_multiple_fd.o get_next_line.o -I libft/includes -I libft/ -L libft/ -lft
+
+test_multiplefd_2056: [ok]
+
+4/4 correct tests
+Grade: 15
+
+= Final grade: 125 =============================================================
