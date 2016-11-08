@@ -2,6 +2,11 @@
 
 ## TL;DR
 
+"The aim of this project is to make you code a function that returns a line ending with a newline, read from a file descriptor."
+
+[PDF for assignment](https://github.com/tsetsefly/42-get_next_line/blob/master/get_next_line.en.pdf)
+
+1. 
 
 ## Functional components
 
@@ -55,11 +60,49 @@ if ((end = ft_strchr(file->buffer, '\n')))
 ```
 
 ### Reading from the file
+This function call will start a loop of reads with the file descriptor of ```BUFF_SIZE``` as described in the ```.h``` file. It will do one of two things:
+1. **If there is no newline** it will store what is read in storage and loop again. There is an additional bit of code in here to deal with the situation where the bytes returned are less than the buffer size (meaning its the EOF) and if there are no newlines it will copy the remaining text read into the line, clear the storage and return 1.
+2. **If there is a newline**, ```ft_strchr``` will find the first newline character and replace it with a ```\0``` and copy this text to the line and copy the text afterwards to storage and return 1.
 
 **Function call in main function**
 ```c
 rtn_bytes = file_detective(&file, fd, &line);
 ```
+**Loop with read**
+```c
+while ((rtn_bytes = read(fd, buf, BUFF_SIZE)) > 0)
+```
+**If no newline**
+```c
+if (!(end = ft_strchr(buf, '\n')))
+{
+	if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
+		return (norm_sucks(&(*file), buf, &(*line)));
+	(*file)->buffer = (char *)ft_realloc((*file)->buffer,
+		ft_strlen((*file)->buffer) + BUFF_SIZE + 1);
+	(*file)->buffer = ft_strcat((*file)->buffer, buf);
+}
+```
+**If newline in read**
+```c
+else
+{
+	*end = '\0';
+	*(*line) = ft_strjoin((*file)->buffer, buf);
+	(*file)->buffer = ft_strcpy((*file)->buffer, (end + 1));
+	return (1);
+}
+```
+**If EOF is reached**
+```c
+static ssize_t		norm_sucks(t_overflow **file, char *buf, char ***line)
+{
+	*(*line) = ft_strjoin((*file)->buffer, buf);
+	ft_bzero((*file)->buffer, ft_strlen((*file)->buffer));
+	return (1);
+}
+```
+
 ## key function calls
 
 ## key functions
