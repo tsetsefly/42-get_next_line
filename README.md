@@ -1,12 +1,15 @@
 # 42: get_next_line
 
 ## TL;DR
-
 "The aim of this project is to make you code a function that returns a line ending with a newline, read from a file descriptor."
 
 [PDF for assignment](https://github.com/tsetsefly/42-get_next_line/blob/master/get_next_line.en.pdf)
 
-1. 
+1. [Storage between reads per file descriptor](https://github.com/tsetsefly/42-get_next_line/blob/master/README.md#storage-between-reads-per-file-descriptor)
+2. [Storage processing](https://github.com/tsetsefly/42-get_next_line/blob/master/README.md#storage-processing-file-buffer)
+3. [Reading from the file](https://github.com/tsetsefly/42-get_next_line/blob/master/README.md#reading-from-the-file)
+4. [Dealing with EOF](https://github.com/tsetsefly/42-get_next_line/blob/master/README.md#dealing-with-eof)
+5. [Memory cleanup](https://github.com/tsetsefly/42-get_next_line/blob/master/README.md#memory-cleanup)
 
 ## Functional components
 
@@ -61,7 +64,7 @@ if ((end = ft_strchr(file->buffer, '\n')))
 
 ### Reading from the file
 This function call will start a loop of reads with the file descriptor of ```BUFF_SIZE``` as described in the ```.h``` file. It will do one of two things:
-1. **If there is no newline** it will store what is read in storage and loop again. There is an additional bit of code in here to deal with the situation where the bytes returned are less than the buffer size (meaning its the EOF) and if there are no newlines it will copy the remaining text read into the line, clear the storage and return 1 (see more below on this).
+1. **If there is no newline** it will store what is read in storage and loop again. There is an additional bit of code in here to deal with the situation where the bytes returned are less than the buffer size (meaning its the EOF) and if there are no newlines it will copy the remaining text read into the line, clear the storage and return 1 [(see more below on this)](https://github.com/tsetsefly/42-get_next_line/blob/master/README.md#dealing-with-eof).
 2. **If there is a newline**, ```ft_strchr``` will find the first newline character and replace it with a ```\0``` and copy this text to the line and copy the text afterwards to storage and return 1.
 
 **Function call in main function**
@@ -96,7 +99,11 @@ else
 
 ### Dealing with EOF
 The next part of the function deals with how to handle when an EOF is reached. EOF will be indicated by either 1) returning less bytes than the ```BUFF_SIZE``` or 2) ```read``` returns ```0```. There are two pieces of code that handle these situations. One piece of code is for if the EOF is found during the while loop is reading the file and there are no more newlines. The other is for outside of this while loop. In both cases the remaining storage and/or ```buf```-read is copied to the line and the storage is zero'd out. This will allow for a subsequent read of ```0``` to trigger memory cleanup.
-
+**Function call within the while loop**
+```c
+if (rtn_bytes < BUFF_SIZE && rtn_bytes > 0)
+        return (norm_sucks(&(*file), buf, &(*line)));
+```
 **If EOF is reached and there are no newlines read**
 ```c
 static ssize_t		norm_sucks(t_overflow **file, char *buf, char ***line)
@@ -140,7 +147,7 @@ if (*begin_list)
 }
 ```
 
-## New libft function: Realloc
+## New libft function: realloc
 Changes the size of allocation of a ```ptr``` to ```size```, if there is not enough room the function will malloc again and copy over as much as possible, free the original, and return the new ptr.
 
 ```c
@@ -157,4 +164,7 @@ char		*ft_realloc(char *old_str, size_t len)
 ```
 
 ## Testing Suites
+1. [42 File Checker](https://github.com/jgigault/42FileChecker)
+2. [Tinfoil Testing Suite - Get Next Line](https://github.com/TinfoilPancakes/get-next-line-testing-tools)
+3. [Moulitest](https://github.com/yyang42/moulitest)
 
